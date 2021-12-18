@@ -2,4 +2,6 @@
 
 [![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/daimajia/AndroidImageSlider?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
  
-This is an amazing image slider for the Android platform. I decided to open source this because there is really not an attractive, convenient
+This is an amazing image slider for the Android platform. I decided to open source this because there is really not an attractive, convenient slider widget in Android.
+ 
+You can easily load images from an i
