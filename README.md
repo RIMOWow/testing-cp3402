@@ -12,4 +12,12 @@ You can easily load images from an internet URL, drawable, or file. And there ar
 
 [Download Apk](https://github.com/daimajia/AndroidImageSlider/releases/download/v1.0.8/demo-1.0.8.apk)
  
-#
+## Usage
+
+### Step 1
+
+#### Gradle
+
+```groovy
+dependencies {
+    	compile "com.android.supp
