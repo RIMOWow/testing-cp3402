@@ -8,4 +8,6 @@ You can easily load images from an internet URL, drawable, or file. And there ar
  
 ## Demo
  
-![](http://ww3.sinaimg.cn/mw690/610d
+![](http://ww3.sinaimg.cn/mw690/610dc034jw1egzor66ojdg20950fknpe.gif)
+
+[Download Apk](https://github.com/dai
