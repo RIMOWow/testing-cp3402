@@ -22,4 +22,5 @@ You can easily load images from an internet URL, drawable, or file. And there ar
 dependencies {
     	compile "com.android.support:support-v4:+"
     	compile 'com.squareup.picasso:picasso:2.3.2'
-    	compile
+    	compile 'com.nineoldandroids:library:2.4.0'
+    	compile 'com.daimajia.
