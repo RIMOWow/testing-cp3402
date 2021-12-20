@@ -20,4 +20,6 @@ You can easily load images from an internet URL, drawable, or file. And there ar
 
 ```groovy
 dependencies {
-    	compile "com.android.supp
+    	compile "com.android.support:support-v4:+"
+    	compile 'com.squareup.picasso:picasso:2.3.2'
+    	compile
