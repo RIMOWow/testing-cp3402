@@ -32,4 +32,6 @@ dependencies {
 
 ```xml
 <dependency>
-   
+    <groupId>com.squareup.picasso</groupId>
+    <artifactId>picasso</artifactId>
+    <vers
