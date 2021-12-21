@@ -37,4 +37,6 @@ dependencies {
     <version>2.3.2</version>
 </dependency>
 <dependency>
-    <groupId>com.nineoldan
+    <groupId>com.nineoldandroids</groupId>
+    <artifactId>library</artifactId>
+    <version>2.4.0</v
