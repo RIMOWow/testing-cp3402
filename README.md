@@ -34,4 +34,7 @@ dependencies {
 <dependency>
     <groupId>com.squareup.picasso</groupId>
     <artifactId>picasso</artifactId>
-    <vers
+    <version>2.3.2</version>
+</dependency>
+<dependency>
+    <groupId>com.nineoldan
