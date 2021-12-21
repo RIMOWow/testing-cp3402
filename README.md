@@ -39,4 +39,8 @@ dependencies {
 <dependency>
     <groupId>com.nineoldandroids</groupId>
     <artifactId>library</artifactId>
-    <version>2.4.0</v
+    <version>2.4.0</version>
+</dependency>
+<dependency>
+    <groupId>com.daimajia.slider</groupId>
+    <arti
