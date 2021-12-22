@@ -43,4 +43,6 @@ dependencies {
 </dependency>
 <dependency>
     <groupId>com.daimajia.slider</groupId>
-    <arti
+    <artifactId>library</artifactId>
+    <version>1.1.2</version>
+    <type
