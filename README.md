@@ -45,4 +45,10 @@ dependencies {
     <groupId>com.daimajia.slider</groupId>
     <artifactId>library</artifactId>
     <version>1.1.2</version>
-    <type
+    <type>apklib</type>
+</dependency>
+```
+
+#### Eclipse
+
+For Eclipse users, I provid
