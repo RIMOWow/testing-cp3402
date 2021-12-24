@@ -53,4 +53,4 @@ dependencies {
 
 For Eclipse users, I provided a sample project which orgnized as Eclipse way. You can download it from [here](https://github.com/daimajia/AndroidImageSlider/releases/download/v1.0.9/AndroidImageSlider-Eclipse.zip), and make some changes to fit your project.
 
-N
+Notice: It's the version of 1.0.9, it may not update any more. You can update manu
