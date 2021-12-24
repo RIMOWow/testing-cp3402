@@ -51,4 +51,4 @@ dependencies {
 
 #### Eclipse
 
-For Eclipse users, I provid
+For Eclipse users, I provided a sample project which orgnized as Eclipse way. You can download it fro
