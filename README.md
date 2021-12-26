@@ -57,4 +57,8 @@ Notice: It's the version of 1.0.9, it may not update any more. You can update ma
 
 ### Step 2
 
-Add permissions (if necessary) to your `AndroidManifest
+Add permissions (if necessary) to your `AndroidManifest.xml`
+
+```xml
+<!-- if you want to load images from the internet -->
+<uses-permission androi
