@@ -63,4 +63,5 @@ Add permissions (if necessary) to your `AndroidManifest.xml`
 <!-- if you want to load images from the internet -->
 <uses-permission android:name="android.permission.INTERNET" /> 
 
-<!-- if you want to load i
+<!-- if you want to load images from a file OR from the internet -->
+<uses-permission android:name="andr
