@@ -67,4 +67,4 @@ Add permissions (if necessary) to your `AndroidManifest.xml`
 <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 ```
 
-**Note:** If you want to load i
+**Note:** If you want to load images from the internet, you need both the `INTERNET` and `READ_EXTERNAL_
