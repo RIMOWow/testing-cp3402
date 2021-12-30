@@ -77,4 +77,6 @@ Add the Slider to your layout:
  
 ```java
 <com.daimajia.slider.library.SliderLayout
-        android:id="@+i
+        android:id="@+id/slider"
+        android:layout_width="match_parent"
+        android:layout_height=
