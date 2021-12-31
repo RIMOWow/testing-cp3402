@@ -79,4 +79,9 @@ Add the Slider to your layout:
 <com.daimajia.slider.library.SliderLayout
         android:id="@+id/slider"
         android:layout_width="match_parent"
-        android:layout_height=
+        android:layout_height="200dp"
+/>
+```        
+ 
+There are some default indicators. If you want to use a provided indicator:
+ 
