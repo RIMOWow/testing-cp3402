@@ -90,4 +90,8 @@ There are some default indicators. If you want to use a provided indicator:
         android:id="@+id/custom_indicator"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="cent
+        android:gravity="center"
+        />
+```
+
+[Code example](https://github.com/daimajia/AndroidIma
