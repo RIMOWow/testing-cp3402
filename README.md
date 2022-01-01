@@ -88,4 +88,6 @@ There are some default indicators. If you want to use a provided indicator:
 ```java
 <com.daimajia.slider.library.Indicators.PagerIndicator
         android:id="@+id/custom_indicator"
-        android:layout_width="wrap_conte
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="cent
