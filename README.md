@@ -104,4 +104,5 @@ Please visit [Wiki](https://github.com/daimajia/AndroidImageSlider/wiki)
  
 ## Thanks
 
-- [Picasso](https
+- [Picasso](https://github.com/square/picasso)
+- [NineOldAndroids](https://github.com/Jake
