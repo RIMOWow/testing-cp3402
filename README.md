@@ -106,4 +106,8 @@ Please visit [Wiki](https://github.com/daimajia/AndroidImageSlider/wiki)
 
 - [Picasso](https://github.com/square/picasso)
 - [NineOldAndroids](https://github.com/JakeWharton/NineOldAndroids)
-- [ViewPagerTransforms](https://github.com/ToxicBakery/
+- [ViewPagerTransforms](https://github.com/ToxicBakery/ViewPagerTransforms)
+
+##About me
+ 
+I am a student in mainland China. I love Google, love
