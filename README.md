@@ -110,4 +110,4 @@ Please visit [Wiki](https://github.com/daimajia/AndroidImageSlider/wiki)
 
 ##About me
  
-I am a student in mainland China. I love Google, love Android, love everything that is interesting. If you get any problems whe
+I am a student in mainland China. I love Google, love Android, love everything that is interesting. If you get any problems when using this library or you have an internship opportunity, please feel
