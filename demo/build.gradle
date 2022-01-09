@@ -12,4 +12,6 @@ android {
         versionCode 2
         versionName "1.0.1"
     }
-    build
+    buildTypes {
+        release {
+            proguardFiles getDefaultProguardFile('progua
