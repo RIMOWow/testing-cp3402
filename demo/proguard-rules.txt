@@ -4,4 +4,5 @@
 # You can edit the include path and order by changing the ProGuard
 # include property in project.properties.
 #
-# For more details
+# For more details, see
+#   http://developer.android.com/guide/developin
