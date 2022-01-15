@@ -3,4 +3,6 @@
     package="com.daimajia.slider.demo" >
 
     <application
-        android:allowBackup
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher"
+        andr
