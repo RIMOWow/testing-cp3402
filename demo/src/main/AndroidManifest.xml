@@ -10,4 +10,5 @@
         <activity
             android:name="com.daimajia.slider.demo.MainActivity"
             android:label="@string/app_name" >
-            <intent
+            <intent-filter>
+                <action android:name="android.i
