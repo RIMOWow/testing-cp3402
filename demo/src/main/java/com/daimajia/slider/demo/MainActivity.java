@@ -92,3 +92,43 @@ public class MainActivity extends ActionBarActivity implements BaseSliderView.On
     public void onSliderClick(BaseSliderView slider) {
         Toast.makeText(this,slider.getBundle().get("extra") + "",Toast.LENGTH_SHORT).show();
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.main,menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.action_custom_indicator:
+                mDemoSlider.setCustomIndicator((PagerIndicator) findViewById(R.id.custom_indicator));
+                break;
+            case R.id.action_custom_child_animation:
+                mDemoSlider.setCustomAnimation(new ChildAnimationExample());
+                break;
+            case R.id.action_restore_default:
+                mDemoSlider.setPresetIndicator(SliderLayout.PresetIndicators.Center_Bottom);
+                mDemoSlider.setCustomAnimation(new DescriptionAnimation());
+                break;
+            case R.id.action_github:
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/daimajia/AndroidImageSlider"));
+                startActivity(browserIntent);
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {}
+
+    @Override
+    public void onPageSelected(int position) {
+        Log.d("Slider Demo", "Page Changed: " + position);
+    }
+
+    @Override
+    public void onPageScrollStateChanged(int state) {}
+}
