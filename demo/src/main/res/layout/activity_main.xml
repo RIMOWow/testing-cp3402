@@ -8,4 +8,6 @@
     <com.daimajia.slider.library.SliderLayout
         android:id="@+id/slider"
         android:layout_width="match_parent"
-  
+        custom:pager_animation="Accordion"
+        custom:auto_cycle="true"
+        cust
