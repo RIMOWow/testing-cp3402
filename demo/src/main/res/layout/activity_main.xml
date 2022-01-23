@@ -14,4 +14,6 @@
         custom:pager_animation_span="1100"
         android:layout_height="200dp"/>
 
-    <com.daimajia.slider.library.Indicat
+    <com.daimajia.slider.library.Indicators.PagerIndicator
+        android:id="@+id/custom_indicator"
+        an
