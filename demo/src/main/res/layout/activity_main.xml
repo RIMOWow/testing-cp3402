@@ -16,4 +16,5 @@
 
     <com.daimajia.slider.library.Indicators.PagerIndicator
         android:id="@+id/custom_indicator"
-        an
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_conte
