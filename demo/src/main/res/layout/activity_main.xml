@@ -10,4 +10,6 @@
         android:layout_width="match_parent"
         custom:pager_animation="Accordion"
         custom:auto_cycle="true"
-        cust
+        custom:indicator_visibility="visible"
+        custom:pager_animation_span="1100"
+       
