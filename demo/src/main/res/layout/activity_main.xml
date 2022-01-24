@@ -21,4 +21,7 @@
         android:gravity="center"
         custom:selected_color="#0095BF"
         custom:unselected_color="#55333333"
-        custom:selected_drawable="@drawable/
+        custom:selected_drawable="@drawable/bird"
+        custom:shape="oval"
+        custom:selected_padding_left="5dp"
+  
