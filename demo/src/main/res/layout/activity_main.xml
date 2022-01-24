@@ -24,4 +24,5 @@
         custom:selected_drawable="@drawable/bird"
         custom:shape="oval"
         custom:selected_padding_left="5dp"
-  
+        custom:selected_padding_right="5dp"
+        custom:unselecte
