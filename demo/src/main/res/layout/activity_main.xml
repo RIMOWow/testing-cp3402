@@ -20,4 +20,5 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         custom:selected_color="#0095BF"
-        
+        custom:unselected_color="#55333333"
+        custom:selected_drawable="@drawable/
