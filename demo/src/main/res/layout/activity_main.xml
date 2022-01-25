@@ -25,4 +25,6 @@
         custom:shape="oval"
         custom:selected_padding_left="5dp"
         custom:selected_padding_right="5dp"
-        custom:unselecte
+        custom:unselected_padding_left="5dp"
+        custom:unselected_padding_right="5dp"
+        android:layout_c
