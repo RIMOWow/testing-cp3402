@@ -27,4 +27,6 @@
         custom:selected_padding_right="5dp"
         custom:unselected_padding_left="5dp"
         custom:unselected_padding_right="5dp"
-        android:layout_c
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        custom:select
