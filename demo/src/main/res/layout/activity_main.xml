@@ -33,4 +33,7 @@
         custom:selected_height="6dp"
         custom:unselected_width="6dp"
         custom:unselected_height="6dp"
-        android:layout_marginB
+        android:layout_marginBottom="20dp"
+        />
+    <com.daimajia.slider.library.Indicators.PagerIndicator
+  
