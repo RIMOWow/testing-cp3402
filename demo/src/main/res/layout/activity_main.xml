@@ -36,4 +36,5 @@
         android:layout_marginBottom="20dp"
         />
     <com.daimajia.slider.library.Indicators.PagerIndicator
-  
+        android:id="@+id/custom_indicator2"
+        style="@style/AndroidImage
