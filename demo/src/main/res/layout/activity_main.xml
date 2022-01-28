@@ -31,4 +31,6 @@
         android:layout_alignParentBottom="true"
         custom:selected_width="6dp"
         custom:selected_height="6dp"
-        custom:unsele
+        custom:unselected_width="6dp"
+        custom:unselected_height="6dp"
+        android:layout_marginB
