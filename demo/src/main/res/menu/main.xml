@@ -3,4 +3,5 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.daimajia.slider.demo.MainActivity" >
     <item android:id="@+id/action_custom_indicator"
-      
+        android:title="Custom Indicator"
+        android:orderInCategory="100"
