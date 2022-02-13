@@ -8,4 +8,6 @@
         app:showAsAction="never" />
     <item android:id="@+id/action_custom_child_animation"
         android:title="ChildView Animation"
-        and
+        android:orderInCategory="100"
+        app:showAsAction="never" />
+    <item android
