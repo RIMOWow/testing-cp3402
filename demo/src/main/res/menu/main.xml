@@ -6,4 +6,6 @@
         android:title="Custom Indicator"
         android:orderInCategory="100"
         app:showAsAction="never" />
-    <item android:id="@+id/action_custom_chi
+    <item android:id="@+id/action_custom_child_animation"
+        android:title="ChildView Animation"
+        and
