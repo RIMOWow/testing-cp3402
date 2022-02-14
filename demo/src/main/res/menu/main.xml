@@ -10,4 +10,5 @@
         android:title="ChildView Animation"
         android:orderInCategory="100"
         app:showAsAction="never" />
-    <item android
+    <item android:id="@+id/action_restore_default"
+        android:orderInCategory="1
