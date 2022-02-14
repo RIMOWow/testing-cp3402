@@ -11,4 +11,7 @@
         android:orderInCategory="100"
         app:showAsAction="never" />
     <item android:id="@+id/action_restore_default"
-        android:orderInCategory="1
+        android:orderInCategory="100"
+        app:showAsAction="never"
+        android:title="Restore default"/>
+    
