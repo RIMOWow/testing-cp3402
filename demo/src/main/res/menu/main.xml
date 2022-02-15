@@ -14,4 +14,5 @@
         android:orderInCategory="100"
         app:showAsAction="never"
         android:title="Restore default"/>
-    
+    <item android:id="@+id/action_github"
+        android:orderInCategory="
