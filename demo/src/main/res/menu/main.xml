@@ -19,3 +19,5 @@
         app:showAsAction="never"
         android:title="GitHub"
         >
+    </item>
+</menu>
