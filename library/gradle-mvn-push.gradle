@@ -21,4 +21,5 @@ def isReleaseBuild() {
     return VERSION_NAME.contains("SNAPSHOT") == false
 }
 
-de
+def getReleaseRepositoryUrl() {
+    return hasProperty('RELEASE_REPOSITORY_URL')
