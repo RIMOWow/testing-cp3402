@@ -15,4 +15,10 @@
  */
 
 apply plugin: 'maven'
-apply plugin: 'sig
+apply plugin: 'signing'
+
+def isReleaseBuild() {
+    return VERSION_NAME.contains("SNAPSHOT") == false
+}
+
+de
