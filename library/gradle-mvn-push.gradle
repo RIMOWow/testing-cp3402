@@ -22,4 +22,5 @@ def isReleaseBuild() {
 }
 
 def getReleaseRepositoryUrl() {
-    return hasProperty('RELEASE_REPOSITORY_URL')
+    return hasProperty('RELEASE_REPOSITORY_URL') ? RELEASE_REPOSITORY_URL
+            : "https://oss.sonatype.org/service/local/stag
