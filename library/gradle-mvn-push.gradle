@@ -27,4 +27,5 @@ def getReleaseRepositoryUrl() {
 }
 
 def getSnapshotRepositoryUrl() {
-    return has
+    return hasProperty('SNAPSHOT_REPOSITORY_URL') ? SNAPSHOT_REPOSITORY_URL
+            : "https://oss.sonaty
