@@ -45,4 +45,6 @@ afterEvaluate { project ->
             mavenDeployer {
                 beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
 
-                pom.groupId
+                pom.groupId = GROUP
+                pom.artifactId = POM_ARTIFACT_ID
+                
