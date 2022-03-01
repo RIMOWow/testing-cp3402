@@ -42,4 +42,5 @@ def getRepositoryPassword() {
 afterEvaluate { project ->
     uploadArchives {
         repositories {
-       
+            mavenDeployer {
+                beforeDeployment { MavenDeplo
