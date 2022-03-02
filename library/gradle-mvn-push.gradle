@@ -50,4 +50,6 @@ afterEvaluate { project ->
                 pom.version = VERSION_NAME
 
                 repository(url: getReleaseRepositoryUrl()) {
-                    authentication(userName: getRepositoryUsername(), p
+                    authentication(userName: getRepositoryUsername(), password: getRepositoryPassword())
+                }
+                snapshotRepos
