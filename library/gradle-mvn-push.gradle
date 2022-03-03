@@ -52,4 +52,5 @@ afterEvaluate { project ->
                 repository(url: getReleaseRepositoryUrl()) {
                     authentication(userName: getRepositoryUsername(), password: getRepositoryPassword())
                 }
-                snapshotRepos
+                snapshotRepository(url: getSnapshotRepositoryUrl()) {
+                    authentic
