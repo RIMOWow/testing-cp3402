@@ -63,4 +63,5 @@ afterEvaluate { project ->
                     url POM_URL
 
                     scm {
- 
+                        url POM_SCM_URL
+                        connection POM_SCM_CON
