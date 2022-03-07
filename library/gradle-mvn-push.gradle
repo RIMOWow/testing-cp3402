@@ -69,4 +69,6 @@ afterEvaluate { project ->
                     }
 
                     licenses {
-                        li
+                        license {
+                            name POM_LICENCE_NAME
+                
