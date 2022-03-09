@@ -72,4 +72,8 @@ afterEvaluate { project ->
                         license {
                             name POM_LICENCE_NAME
                             url POM_LICENCE_URL
-                            distribution POM_LICENC
+                            distribution POM_LICENCE_DIST
+                        }
+                    }
+
+         
