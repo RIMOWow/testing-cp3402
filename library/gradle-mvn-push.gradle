@@ -80,4 +80,7 @@ afterEvaluate { project ->
                         developer {
                             id POM_DEVELOPER_ID
                             name POM_DEVELOPER_NAME
-   
+                        }
+                    }
+                }
+         
