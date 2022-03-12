@@ -99,4 +99,10 @@ afterEvaluate { project ->
         into('res') {
             from 'res'
         }
+        into('src') {
+            from 'src'
+        }
+    }
+
+
     
