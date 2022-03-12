@@ -105,4 +105,5 @@ afterEvaluate { project ->
     }
 
 
-    
+    task androidJavadocs(type: Javadoc) {
+        source = android.sourceSets.main.java.sr
