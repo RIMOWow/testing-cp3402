@@ -106,4 +106,5 @@ afterEvaluate { project ->
 
 
     task androidJavadocs(type: Javadoc) {
-        source = android.sourceSets.main.java.sr
+        source = android.sourceSets.main.java.srcDirs
+        classpath += project.files(android.getBootClassp
