@@ -116,4 +116,8 @@ afterEvaluate { project ->
     }
 
     task androidJavadocsJar(type: Jar, dependsOn: androidJavadocs) {
-   
+        classifier = 'javadoc'
+        from androidJavadocs.destinationDir
+    }
+
+    t
