@@ -5,4 +5,6 @@
 # include property in project.properties.
 #
 # For more details, see
-#   http://deve
+#   http://developer.android.com/guide/developing/tools/proguard.html
+
+# Add any project specific keep optio
