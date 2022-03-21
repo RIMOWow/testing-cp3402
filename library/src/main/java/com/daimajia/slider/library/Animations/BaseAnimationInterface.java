@@ -7,4 +7,5 @@ import android.view.View;
  * {@link com.daimajia.slider.library.Tricks.ViewPagerEx} animation (PagerTransformer) starts or ends.
  *
  *
- * There are two items you have to know. The first item is the slider you are dragging. 
+ * There are two items you have to know. The first item is the slider you are dragging. This item
+ * I call it Current Item. The second is the slider that gonn
