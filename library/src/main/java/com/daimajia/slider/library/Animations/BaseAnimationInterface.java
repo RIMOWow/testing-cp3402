@@ -8,4 +8,6 @@ import android.view.View;
  *
  *
  * There are two items you have to know. The first item is the slider you are dragging. This item
- * I call it Current Item. The second is the slider that gonn
+ * I call it Current Item. The second is the slider that gonna to show. I call that Next Item.
+ *
+ * When you start to drag th
