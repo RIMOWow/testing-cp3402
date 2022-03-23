@@ -13,4 +13,6 @@ import android.view.View;
  * When you start to drag the slider in front of you, onPrepareCurrentItemLeaveScreen() and
  * onPrepareNextItemShowInScreen will be called.
  *
- * When you finish drag, the onC
+ * When you finish drag, the onCurrentItemDisappear and onNextItemAppear will be invoked.
+ *
+ * You can see a demo class {
