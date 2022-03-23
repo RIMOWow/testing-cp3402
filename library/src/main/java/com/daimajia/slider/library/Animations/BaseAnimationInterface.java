@@ -11,4 +11,6 @@ import android.view.View;
  * I call it Current Item. The second is the slider that gonna to show. I call that Next Item.
  *
  * When you start to drag the slider in front of you, onPrepareCurrentItemLeaveScreen() and
- * onPrepareNextItemS
+ * onPrepareNextItemShowInScreen will be called.
+ *
+ * When you finish drag, the onC
