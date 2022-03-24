@@ -18,4 +18,7 @@ import android.view.View;
  * You can see a demo class {@link com.daimajia.slider.library.Animations.DescriptionAnimation},
  * this class gives the description text an animation.
  */
-public interface BaseAnimationInterf
+public interface BaseAnimationInterface {
+
+    /**
+     * When the current item prepare to start leav
