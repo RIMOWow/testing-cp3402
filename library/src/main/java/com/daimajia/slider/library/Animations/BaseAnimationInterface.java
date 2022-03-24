@@ -21,4 +21,7 @@ import android.view.View;
 public interface BaseAnimationInterface {
 
     /**
-     * When the current item prepare to start leav
+     * When the current item prepare to start leaving the screen.
+     * @param current
+     */
+    public void onPrepareCurrentItemLeaveS
