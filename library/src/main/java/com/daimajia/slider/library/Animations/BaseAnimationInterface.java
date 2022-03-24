@@ -16,4 +16,6 @@ import android.view.View;
  * When you finish drag, the onCurrentItemDisappear and onNextItemAppear will be invoked.
  *
  * You can see a demo class {@link com.daimajia.slider.library.Animations.DescriptionAnimation},
- * this class give
+ * this class gives the description text an animation.
+ */
+public interface BaseAnimationInterf
