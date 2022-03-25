@@ -24,4 +24,8 @@ public interface BaseAnimationInterface {
      * When the current item prepare to start leaving the screen.
      * @param current
      */
-    public void onPrepareCurrentItemLeaveS
+    public void onPrepareCurrentItemLeaveScreen(View current);
+
+    /**
+     * The next item which will be shown in ViewPager/
+ 
