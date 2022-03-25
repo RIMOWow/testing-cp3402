@@ -33,4 +33,6 @@ public interface BaseAnimationInterface {
     public void onPrepareNextItemShowInScreen(View next);
 
     /**
-     
+     * Current item totally disappear from screen.
+     * @param view
+     */
