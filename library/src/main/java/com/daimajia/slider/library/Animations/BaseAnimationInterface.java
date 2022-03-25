@@ -28,4 +28,9 @@ public interface BaseAnimationInterface {
 
     /**
      * The next item which will be shown in ViewPager/
- 
+     * @param next
+     */
+    public void onPrepareNextItemShowInScreen(View next);
+
+    /**
+     
