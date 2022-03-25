@@ -36,3 +36,7 @@ public interface BaseAnimationInterface {
      * Current item totally disappear from screen.
      * @param view
      */
+    public void onCurrentItemDisappear(View view);
+
+    /**
+     * Next item totally sho
