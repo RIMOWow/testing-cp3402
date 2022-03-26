@@ -42,4 +42,5 @@ public interface BaseAnimationInterface {
      * Next item totally show in screen.
      * @param view
      */
-    public void onNextItemAppear
+    public void onNextItemAppear(View view);
+}
