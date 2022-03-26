@@ -39,4 +39,7 @@ public interface BaseAnimationInterface {
     public void onCurrentItemDisappear(View view);
 
     /**
-     * Next item totally sho
+     * Next item totally show in screen.
+     * @param view
+     */
+    public void onNextItemAppear
