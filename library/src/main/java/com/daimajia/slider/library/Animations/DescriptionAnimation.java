@@ -8,4 +8,4 @@ import com.nineoldandroids.animation.ValueAnimator;
 import com.nineoldandroids.view.ViewHelper;
 
 /**
- * A demo
+ * A demo class to show how to use {@link com.daimajia.slider.library.Animations.BaseAnimationInte
