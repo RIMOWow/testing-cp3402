@@ -9,4 +9,6 @@ import com.nineoldandroids.view.ViewHelper;
 
 /**
  * A demo class to show how to use {@link com.daimajia.slider.library.Animations.BaseAnimationInterface}
- * to make  your custom animation in {@link com.daimajia.slider.library.Tri
+ * to make  your custom animation in {@link com.daimajia.slider.library.Tricks.ViewPagerEx.PageTransformer} action.
+ */
+public class DescriptionAnimation im
