@@ -14,4 +14,5 @@ import com.nineoldandroids.view.ViewHelper;
 public class DescriptionAnimation implements BaseAnimationInterface {
 
     @Override
-    public void onPrepareC
+    public void onPrepareCurrentItemLeaveScreen(View current) {
+        View descriptionLayout
