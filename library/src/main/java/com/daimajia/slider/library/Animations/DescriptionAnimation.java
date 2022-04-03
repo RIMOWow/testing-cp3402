@@ -15,4 +15,5 @@ public class DescriptionAnimation implements BaseAnimationInterface {
 
     @Override
     public void onPrepareCurrentItemLeaveScreen(View current) {
-        View descriptionLayout
+        View descriptionLayout = current.findViewById(R.id.description_layout);
+        if(descriptionLayout!=nu
