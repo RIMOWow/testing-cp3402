@@ -17,4 +17,9 @@ public class DescriptionAnimation implements BaseAnimationInterface {
     public void onPrepareCurrentItemLeaveScreen(View current) {
         View descriptionLayout = current.findViewById(R.id.description_layout);
         if(descriptionLayout!=null){
-            current.findViewById(R.id.description_layout).setVisibility(
+            current.findViewById(R.id.description_layout).setVisibility(View.INVISIBLE);
+        }
+    }
+
+    /**
+     * When next item is coming to s
