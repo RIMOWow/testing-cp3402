@@ -22,4 +22,6 @@ public class DescriptionAnimation implements BaseAnimationInterface {
     }
 
     /**
-     * When next item is coming to s
+     * When next item is coming to show, let's hide the description layout.
+     * @param next
+     */
