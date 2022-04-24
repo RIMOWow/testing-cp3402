@@ -28,4 +28,5 @@ public class DescriptionAnimation implements BaseAnimationInterface {
     @Override
     public void onPrepareNextItemShowInScreen(View next) {
         View descriptionLayout = next.findViewById(R.id.description_layout);
-    
+        if(descriptionLayout!=null){
+            next.findViewById(R.id
