@@ -31,4 +31,8 @@ public class DescriptionAnimation implements BaseAnimationInterface {
         if(descriptionLayout!=null){
             next.findViewById(R.id.description_layout).setVisibility(View.INVISIBLE);
         }
- 
+    }
+
+
+    @Override
+    public void onCurrentItemDisappear(View view) {
