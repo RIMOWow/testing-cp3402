@@ -36,3 +36,8 @@ public class DescriptionAnimation implements BaseAnimationInterface {
 
     @Override
     public void onCurrentItemDisappear(View view) {
+
+    }
+
+    /**
+     * When next item show in ViewPagerEx, let's make an animati
