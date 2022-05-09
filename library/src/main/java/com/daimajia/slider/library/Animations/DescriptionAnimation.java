@@ -40,4 +40,9 @@ public class DescriptionAnimation implements BaseAnimationInterface {
     }
 
     /**
-     * When next item show in ViewPagerEx, let's make an animati
+     * When next item show in ViewPagerEx, let's make an animation to show the
+     * description layout.
+     * @param view
+     */
+    @Override
+    
