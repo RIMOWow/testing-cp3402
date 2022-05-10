@@ -47,4 +47,6 @@ public class DescriptionAnimation implements BaseAnimationInterface {
     @Override
     public void onNextItemAppear(View view) {
 
-        View descriptionLayout = view.findVi
+        View descriptionLayout = view.findViewById(R.id.description_layout);
+        if(descriptionLayout!=null){
+            flo
