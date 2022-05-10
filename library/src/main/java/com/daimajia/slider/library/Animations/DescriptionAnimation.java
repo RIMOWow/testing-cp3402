@@ -45,4 +45,6 @@ public class DescriptionAnimation implements BaseAnimationInterface {
      * @param view
      */
     @Override
-    
+    public void onNextItemAppear(View view) {
+
+        View descriptionLayout = view.findVi
