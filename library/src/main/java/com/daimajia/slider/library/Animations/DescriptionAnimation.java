@@ -50,4 +50,5 @@ public class DescriptionAnimation implements BaseAnimationInterface {
         View descriptionLayout = view.findViewById(R.id.description_layout);
         if(descriptionLayout!=null){
             float layoutY = ViewHelper.getY(descriptionLayout);
-            view.findViewById(
+            view.findViewById(R.id.description_layout).setVisibility(View.VISIBLE);
+            ValueAnimator anima
