@@ -80,3 +80,74 @@ public class PagerIndicator extends LinearLayout implements ViewPagerEx.OnPageCh
         Visible,
         Invisible;
     };
+
+    private GradientDrawable mUnSelectedGradientDrawable;
+    private GradientDrawable mSelectedGradientDrawable;
+
+    private LayerDrawable mSelectedLayerDrawable;
+    private LayerDrawable mUnSelectedLayerDrawable;
+
+    private float mPadding_left;
+    private float mPadding_right;
+    private float mPadding_top;
+    private float mPadding_bottom;
+
+    private float mSelectedPadding_Left;
+    private float mSelectedPadding_Right;
+    private float mSelectedPadding_Top;
+    private float mSelectedPadding_Bottom;
+
+    private float mUnSelectedPadding_Left;
+    private float mUnSelectedPadding_Right;
+    private float mUnSelectedPadding_Top;
+    private float mUnSelectedPadding_Bottom;
+
+    /**
+     * Put all the indicators into a ArrayList, so we can remove them easily.
+     */
+    private ArrayList<ImageView> mIndicators = new ArrayList<ImageView>();
+
+
+    public PagerIndicator(Context context) {
+        this(context,null);
+    }
+
+    public PagerIndicator(Context context, AttributeSet attrs) {
+        super(context, attrs);
+
+        mContext = context;
+
+        final TypedArray attributes = context.obtainStyledAttributes(attrs,R.styleable.PagerIndicator,0,0);
+
+        int visibility = attributes.getInt(R.styleable.PagerIndicator_visibility,IndicatorVisibility.Visible.ordinal());
+
+        for(IndicatorVisibility v : IndicatorVisibility.values()){
+            if(v.ordinal() == visibility){
+                mVisibility = v;
+                break;
+            }
+        }
+
+        int shape = attributes.getInt(R.styleable.PagerIndicator_shape, Shape.Oval.ordinal());
+        for(Shape s: Shape.values()){
+            if(s.ordinal() == shape){
+                mIndicatorShape = s;
+                break;
+            }
+        }
+
+        mUserSetSelectedIndicatorResId = attributes.getResourceId(R.styleable.PagerIndicator_selected_drawable,
+                0);
+        mUserSetUnSelectedIndicatorResId = attributes.getResourceId(R.styleable.PagerIndicator_unselected_drawable,
+                0);
+
+        mDefaultSelectedColor = attributes.getColor(R.styleable.PagerIndicator_selected_color, Color.rgb(255, 255, 255));
+        mDefaultUnSelectedColor = attributes.getColor(R.styleable.PagerIndicator_unselected_color, Color.argb(33,255,255,255));
+
+        mDefaultSelectedWidth = attributes.getDimension(R.styleable.PagerIndicator_selected_width,(int)pxFromDp(6));
+        mDefaultSelectedHeight = attributes.getDimensionPixelSize(R.styleable.PagerIndicator_selected_height,(int)pxFromDp(6));
+
+        mDefaultUnSelectedWidth = attributes.getDimensionPixelSize(R.styleable.PagerIndicator_unselected_width,(int)pxFromDp(6));
+        mDefaultUnSelectedHeight = attributes.getDimensionPixelSize(R.styleable.PagerIndicator_unselected_height,(int)pxFromDp(6));
+
+        mSelectedGradientDrawable = new GradientDrawable();
