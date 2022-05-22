@@ -308,3 +308,93 @@ public class PagerIndicator extends LinearLayout implements ViewPagerEx.OnPageCh
     /**
      * clear self means unregister the dataset observer and remove all the child views(indicators).
      */
+    public void destroySelf(){
+        if(mPager == null || mPager.getAdapter() == null){
+            return;
+        }
+        InfinitePagerAdapter wrapper = (InfinitePagerAdapter)mPager.getAdapter();
+        PagerAdapter adapter = wrapper.getRealAdapter();
+        if(adapter!=null){
+            adapter.unregisterDataSetObserver(dataChangeObserver);
+        }
+        removeAllViews();
+    }
+
+    /**
+     * bind indicator with viewpagerEx.
+     * @param pager
+     */
+    public void setViewPager(ViewPagerEx pager){
+        if(pager.getAdapter() == null){
+            throw new IllegalStateException("Viewpager does not have adapter instance");
+        }
+        mPager = pager;
+        mPager.addOnPageChangeListener(this);
+        ((InfinitePagerAdapter)mPager.getAdapter()).getRealAdapter().registerDataSetObserver(dataChangeObserver);
+    }
+
+
+    private void resetDrawable(){
+        for(View i : mIndicators){
+            if(mPreviousSelectedIndicator!= null && mPreviousSelectedIndicator.equals(i)){
+                ((ImageView)i).setImageDrawable(mSelectedDrawable);
+            }
+            else{
+                ((ImageView)i).setImageDrawable(mUnselectedDrawable);
+            }
+        }
+    }
+
+    /**
+     * redraw the indicators.
+     */
+    public void redraw(){
+        mItemCount = getShouldDrawCount();
+        mPreviousSelectedIndicator = null;
+        for(View i:mIndicators){
+            removeView(i);
+        }
+
+
+        for(int i =0 ;i< mItemCount; i++){
+            ImageView indicator = new ImageView(mContext);
+            indicator.setImageDrawable(mUnselectedDrawable);
+            indicator.setPadding((int)mUnSelectedPadding_Left,
+                    (int)mUnSelectedPadding_Top,
+                    (int)mUnSelectedPadding_Right,
+                    (int)mUnSelectedPadding_Bottom);
+            addView(indicator);
+            mIndicators.add(indicator);
+        }
+        setItemAsSelected(mPreviousSelectedPosition);
+    }
+
+    /**
+     * since we used a adapter wrapper, so we can't getCount directly from wrapper.
+     * @return
+     */
+    private int getShouldDrawCount(){
+        if(mPager.getAdapter() instanceof InfinitePagerAdapter){
+            return ((InfinitePagerAdapter)mPager.getAdapter()).getRealCount();
+        }else{
+            return mPager.getAdapter().getCount();
+        }
+    }
+
+    private DataSetObserver dataChangeObserver = new DataSetObserver() {
+        @Override
+        public void onChanged() {
+            PagerAdapter adapter = mPager.getAdapter();
+            int count = 0;
+            if(adapter instanceof InfinitePagerAdapter){
+                count = ((InfinitePagerAdapter)adapter).getRealCount();
+            }else{
+                count = adapter.getCount();
+            }
+            if(count > mItemCount){
+                for(int i =0 ; i< count - mItemCount;i++){
+                    ImageView indicator = new ImageView(mContext);
+                    indicator.setImageDrawable(mUnselectedDrawable);
+                    indicator.setPadding((int)mUnSelectedPadding_Left,
+                            (int)mUnSelectedPadding_Top,
+                            (int)mUnSelectedPadding_Right,
