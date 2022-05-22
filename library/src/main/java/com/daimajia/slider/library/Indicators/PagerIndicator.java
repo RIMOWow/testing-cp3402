@@ -151,3 +151,78 @@ public class PagerIndicator extends LinearLayout implements ViewPagerEx.OnPageCh
         mDefaultUnSelectedHeight = attributes.getDimensionPixelSize(R.styleable.PagerIndicator_unselected_height,(int)pxFromDp(6));
 
         mSelectedGradientDrawable = new GradientDrawable();
+        mUnSelectedGradientDrawable = new GradientDrawable();
+
+        mPadding_left = attributes.getDimensionPixelSize(R.styleable.PagerIndicator_padding_left,(int)pxFromDp(3));
+        mPadding_right = attributes.getDimensionPixelSize(R.styleable.PagerIndicator_padding_right,(int)pxFromDp(3));
+        mPadding_top = attributes.getDimensionPixelSize(R.styleable.PagerIndicator_padding_top,(int)pxFromDp(0));
+        mPadding_bottom = attributes.getDimensionPixelSize(R.styleable.PagerIndicator_padding_bottom,(int)pxFromDp(0));
+
+        mSelectedPadding_Left = attributes.getDimensionPixelSize(R.styleable.PagerIndicator_selected_padding_left,(int)mPadding_left);
+        mSelectedPadding_Right = attributes.getDimensionPixelSize(R.styleable.PagerIndicator_selected_padding_right,(int)mPadding_right);
+        mSelectedPadding_Top = attributes.getDimensionPixelSize(R.styleable.PagerIndicator_selected_padding_top,(int)mPadding_top);
+        mSelectedPadding_Bottom = attributes.getDimensionPixelSize(R.styleable.PagerIndicator_selected_padding_bottom,(int)mPadding_bottom);
+
+        mUnSelectedPadding_Left = attributes.getDimensionPixelSize(R.styleable.PagerIndicator_unselected_padding_left,(int)mPadding_left);
+        mUnSelectedPadding_Right = attributes.getDimensionPixelSize(R.styleable.PagerIndicator_unselected_padding_right,(int)mPadding_right);
+        mUnSelectedPadding_Top = attributes.getDimensionPixelSize(R.styleable.PagerIndicator_unselected_padding_top,(int)mPadding_top);
+        mUnSelectedPadding_Bottom = attributes.getDimensionPixelSize(R.styleable.PagerIndicator_unselected_padding_bottom,(int)mPadding_bottom);
+
+        mSelectedLayerDrawable = new LayerDrawable(new Drawable[]{mSelectedGradientDrawable});
+        mUnSelectedLayerDrawable = new LayerDrawable(new Drawable[]{mUnSelectedGradientDrawable});
+
+
+        setIndicatorStyleResource(mUserSetSelectedIndicatorResId,mUserSetUnSelectedIndicatorResId);
+        setDefaultIndicatorShape(mIndicatorShape);
+        setDefaultSelectedIndicatorSize(mDefaultSelectedWidth,mDefaultSelectedHeight,Unit.Px);
+        setDefaultUnselectedIndicatorSize(mDefaultUnSelectedWidth,mDefaultUnSelectedHeight,Unit.Px);
+        setDefaultIndicatorColor(mDefaultSelectedColor, mDefaultUnSelectedColor);
+        setIndicatorVisibility(mVisibility);
+        attributes.recycle();
+    }
+
+    public enum Shape{
+        Oval,Rectangle
+    }
+
+    /**
+     * if you are using the default indicator, this method will help you to set the shape of
+     * indicator, there are two kind of shapes you  can set, oval and rect.
+     * @param shape
+     */
+    public void setDefaultIndicatorShape(Shape shape){
+        if(mUserSetSelectedIndicatorResId == 0){
+            if(shape == Shape.Oval){
+                mSelectedGradientDrawable.setShape(GradientDrawable.OVAL);
+            }else{
+                mSelectedGradientDrawable.setShape(GradientDrawable.RECTANGLE);
+            }
+        }
+        if(mUserSetUnSelectedIndicatorResId == 0){
+            if(shape == Shape.Oval){
+                mUnSelectedGradientDrawable.setShape(GradientDrawable.OVAL);
+            }else{
+                mUnSelectedGradientDrawable.setShape(GradientDrawable.RECTANGLE);
+            }
+        }
+        resetDrawable();
+    }
+
+
+    /**
+     * Set Indicator style.
+     * @param selected page selected drawable
+     * @param unselected page unselected drawable
+     */
+    public void setIndicatorStyleResource(int selected, int unselected){
+        mUserSetSelectedIndicatorResId = selected;
+        mUserSetUnSelectedIndicatorResId = unselected;
+        if(selected == 0){
+            mSelectedDrawable = mSelectedLayerDrawable;
+        }else{
+            mSelectedDrawable = mContext.getResources().getDrawable(mUserSetSelectedIndicatorResId);
+        }
+        if(unselected == 0){
+            mUnselectedDrawable = mUnSelectedLayerDrawable;
+        }else{
+            mUnselectedDrawable = mContext.getResources().getDrawable(mUserSetUnSelectedIndicatorResId);
