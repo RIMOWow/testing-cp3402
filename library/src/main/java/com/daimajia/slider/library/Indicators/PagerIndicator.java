@@ -226,3 +226,85 @@ public class PagerIndicator extends LinearLayout implements ViewPagerEx.OnPageCh
             mUnselectedDrawable = mUnSelectedLayerDrawable;
         }else{
             mUnselectedDrawable = mContext.getResources().getDrawable(mUserSetUnSelectedIndicatorResId);
+        }
+
+        resetDrawable();
+    }
+
+    /**
+     * if you are using the default indicator , this method will help you to set the selected status and
+     * the unselected status color.
+     * @param selectedColor
+     * @param unselectedColor
+     */
+    public void setDefaultIndicatorColor(int selectedColor,int unselectedColor){
+        if(mUserSetSelectedIndicatorResId == 0){
+            mSelectedGradientDrawable.setColor(selectedColor);
+        }
+        if(mUserSetUnSelectedIndicatorResId == 0){
+            mUnSelectedGradientDrawable.setColor(unselectedColor);
+        }
+        resetDrawable();
+    }
+
+    public enum Unit{
+        DP,Px
+    }
+
+    public void setDefaultSelectedIndicatorSize(float width,float height,Unit unit){
+        if(mUserSetSelectedIndicatorResId == 0){
+            float w = width;
+            float h = height;
+            if(unit == Unit.DP){
+                w = pxFromDp(width);
+                h = pxFromDp(height);
+            }
+            mSelectedGradientDrawable.setSize((int) w, (int) h);
+            resetDrawable();
+        }
+    }
+
+    public void setDefaultUnselectedIndicatorSize(float width,float height,Unit unit){
+        if(mUserSetUnSelectedIndicatorResId == 0){
+            float w = width;
+            float h = height;
+            if(unit == Unit.DP){
+                w = pxFromDp(width);
+                h = pxFromDp(height);
+            }
+            mUnSelectedGradientDrawable.setSize((int) w, (int) h);
+            resetDrawable();
+        }
+    }
+
+    public void setDefaultIndicatorSize(float width, float height, Unit unit){
+        setDefaultSelectedIndicatorSize(width,height,unit);
+        setDefaultUnselectedIndicatorSize(width,height,unit);
+    }
+
+    private float dpFromPx(float px)
+    {
+        return px / this.getContext().getResources().getDisplayMetrics().density;
+    }
+
+    private float pxFromDp(float dp)
+    {
+        return dp * this.getContext().getResources().getDisplayMetrics().density;
+    }
+
+    /**
+     * set the visibility of indicator.
+     * @param visibility
+     */
+    public void setIndicatorVisibility(IndicatorVisibility visibility){
+        if(visibility == IndicatorVisibility.Visible){
+            setVisibility(View.VISIBLE);
+        }else{
+            setVisibility(View.INVISIBLE);
+        }
+        resetDrawable();
+    }
+
+    /**
+     * clear self means unregister the dataset observer and remove all the child views(indicators).
+     */
