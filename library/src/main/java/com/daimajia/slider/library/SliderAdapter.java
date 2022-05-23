@@ -98,3 +98,13 @@ public class SliderAdapter extends PagerAdapter implements BaseSliderView.ImageL
     public void onEnd(boolean result, BaseSliderView target) {
         if(target.isErrorDisappear() == false || result == true){
             return;
+        }
+        for (BaseSliderView slider: mImageContents){
+            if(slider.equals(target)){
+                removeSlider(target);
+                break;
+            }
+        }
+    }
+
+}
