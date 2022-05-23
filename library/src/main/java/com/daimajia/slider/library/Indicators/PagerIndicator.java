@@ -398,3 +398,76 @@ public class PagerIndicator extends LinearLayout implements ViewPagerEx.OnPageCh
                     indicator.setPadding((int)mUnSelectedPadding_Left,
                             (int)mUnSelectedPadding_Top,
                             (int)mUnSelectedPadding_Right,
+                            (int)mUnSelectedPadding_Bottom);
+                    addView(indicator);
+                    mIndicators.add(indicator);
+                }
+            }else if(count < mItemCount){
+                for(int i = 0; i < mItemCount - count;i++){
+                    removeView(mIndicators.get(0));
+                    mIndicators.remove(0);
+                }
+            }
+            mItemCount = count;
+            mPager.setCurrentItem(mItemCount*20 + mPager.getCurrentItem());
+        }
+
+        @Override
+        public void onInvalidated() {
+            super.onInvalidated();
+            redraw();
+        }
+    };
+
+    private void setItemAsSelected(int position){
+        if(mPreviousSelectedIndicator != null){
+            mPreviousSelectedIndicator.setImageDrawable(mUnselectedDrawable);
+            mPreviousSelectedIndicator.setPadding(
+                    (int)mUnSelectedPadding_Left,
+                    (int)mUnSelectedPadding_Top,
+                    (int)mUnSelectedPadding_Right,
+                    (int)mUnSelectedPadding_Bottom
+            );
+        }
+        ImageView currentSelected = (ImageView)getChildAt(position + 1);
+        if(currentSelected != null){
+            currentSelected.setImageDrawable(mSelectedDrawable);
+            currentSelected.setPadding(
+                    (int)mSelectedPadding_Left,
+                    (int)mSelectedPadding_Top,
+                    (int)mSelectedPadding_Right,
+                    (int)mSelectedPadding_Bottom
+            );
+            mPreviousSelectedIndicator = currentSelected;
+        }
+        mPreviousSelectedPosition = position;
+    }
+
+    @Override
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+    }
+
+    public IndicatorVisibility getIndicatorVisibility(){
+        return mVisibility;
+    }
+
+    @Override
+    public void onPageSelected(int position) {
+         if(mItemCount == 0){
+            return;
+        }
+        setItemAsSelected(position-1);
+    }
+    @Override
+    public void onPageScrollStateChanged(int state) {
+    }
+
+    public int getSelectedIndicatorResId(){
+        return mUserSetSelectedIndicatorResId;
+    }
+
+    public int getUnSelectedIndicatorResId(){
+        return mUserSetUnSelectedIndicatorResId;
+    }
+
+}
