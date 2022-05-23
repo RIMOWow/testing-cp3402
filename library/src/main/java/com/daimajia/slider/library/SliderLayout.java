@@ -305,3 +305,90 @@ public class SliderLayout extends RelativeLayout{
 
     /**
      * stop the auto circle
+     */
+    public void stopAutoCycle(){
+        if(mCycleTask!=null){
+            mCycleTask.cancel();
+        }
+        if(mCycleTimer!= null){
+            mCycleTimer.cancel();
+        }
+        if(mResumingTimer!= null){
+            mResumingTimer.cancel();
+        }
+        if(mResumingTask!=null){
+            mResumingTask.cancel();
+        }
+        mAutoCycle = false;
+        mCycling = false;
+    }
+
+    /**
+     * when paused cycle, this method can weak it up.
+     */
+    private void recoverCycle(){
+        if(!mAutoRecover || !mAutoCycle){
+            return;
+        }
+
+        if(!mCycling){
+            if(mResumingTask != null && mResumingTimer!= null){
+                mResumingTimer.cancel();
+                mResumingTask.cancel();
+            }
+            mResumingTimer = new Timer();
+            mResumingTask = new TimerTask() {
+                @Override
+                public void run() {
+                    startAutoCycle();
+                }
+            };
+            mResumingTimer.schedule(mResumingTask, 6000);
+        }
+    }
+
+
+
+    @Override
+    public boolean onInterceptTouchEvent(MotionEvent ev) {
+        int action = ev.getAction();
+        switch (action) {
+            case MotionEvent.ACTION_DOWN:
+                pauseAutoCycle();
+                break;
+        }
+        return false;
+    }
+
+    /**
+     * set ViewPager transformer.
+     * @param reverseDrawingOrder
+     * @param transformer
+     */
+    public void setPagerTransformer(boolean reverseDrawingOrder,BaseTransformer transformer){
+        mViewPagerTransformer = transformer;
+        mViewPagerTransformer.setCustomAnimationInterface(mCustomAnimation);
+        mViewPager.setPageTransformer(reverseDrawingOrder,mViewPagerTransformer);
+    }
+
+
+
+    /**
+     * set the duration between two slider changes.
+     * @param period
+     * @param interpolator
+     */
+    public void setSliderTransformDuration(int period,Interpolator interpolator){
+        try{
+            Field mScroller = ViewPagerEx.class.getDeclaredField("mScroller");
+            mScroller.setAccessible(true);
+            FixedSpeedScroller scroller = new FixedSpeedScroller(mViewPager.getContext(),interpolator, period);
+            mScroller.set(mViewPager,scroller);
+        }catch (Exception e){
+
+        }
+    }
+
+    /**
+     * preset transformers and their names
+     */
