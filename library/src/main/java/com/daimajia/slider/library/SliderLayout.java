@@ -392,3 +392,90 @@ public class SliderLayout extends RelativeLayout{
     /**
      * preset transformers and their names
      */
+    public enum Transformer{
+        Default("Default"),
+        Accordion("Accordion"),
+        Background2Foreground("Background2Foreground"),
+        CubeIn("CubeIn"),
+        DepthPage("DepthPage"),
+        Fade("Fade"),
+        FlipHorizontal("FlipHorizontal"),
+        FlipPage("FlipPage"),
+        Foreground2Background("Foreground2Background"),
+        RotateDown("RotateDown"),
+        RotateUp("RotateUp"),
+        Stack("Stack"),
+        Tablet("Tablet"),
+        ZoomIn("ZoomIn"),
+        ZoomOutSlide("ZoomOutSlide"),
+        ZoomOut("ZoomOut");
+
+        private final String name;
+
+        private Transformer(String s){
+            name = s;
+        }
+        public String toString(){
+            return name;
+        }
+
+        public boolean equals(String other){
+            return (other == null)? false:name.equals(other);
+        }
+    };
+
+    /**
+     * set a preset viewpager transformer by id.
+     * @param transformerId
+     */
+    public void setPresetTransformer(int transformerId){
+        for(Transformer t : Transformer.values()){
+            if(t.ordinal() == transformerId){
+                setPresetTransformer(t);
+                break;
+            }
+        }
+    }
+
+    /**
+     * set preset PagerTransformer via the name of transforemer.
+     * @param transformerName
+     */
+    public void setPresetTransformer(String transformerName){
+        for(Transformer t : Transformer.values()){
+            if(t.equals(transformerName)){
+                setPresetTransformer(t);
+                return;
+            }
+        }
+    }
+
+    /**
+     * Inject your custom animation into PageTransformer, you can know more details in
+     * {@link com.daimajia.slider.library.Animations.BaseAnimationInterface},
+     * and you can see a example in {@link com.daimajia.slider.library.Animations.DescriptionAnimation}
+     * @param animation
+     */
+    public void setCustomAnimation(BaseAnimationInterface animation){
+        mCustomAnimation = animation;
+        if(mViewPagerTransformer != null){
+            mViewPagerTransformer.setCustomAnimationInterface(mCustomAnimation);
+        }
+    }
+
+    /**
+     * pretty much right? enjoy it. :-D
+     *
+     * @param ts
+     */
+    public void setPresetTransformer(Transformer ts){
+        //
+        // special thanks to https://github.com/ToxicBakery/ViewPagerTransforms
+        //
+        BaseTransformer t = null;
+        switch (ts){
+            case Default:
+                t = new DefaultTransformer();
+                break;
+            case Accordion:
+                t = new AccordionTransformer();
