@@ -479,3 +479,78 @@ public class SliderLayout extends RelativeLayout{
                 break;
             case Accordion:
                 t = new AccordionTransformer();
+                break;
+            case Background2Foreground:
+                t = new BackgroundToForegroundTransformer();
+                break;
+            case CubeIn:
+                t = new CubeInTransformer();
+                break;
+            case DepthPage:
+                t = new DepthPageTransformer();
+                break;
+            case Fade:
+                t = new FadeTransformer();
+                break;
+            case FlipHorizontal:
+                t = new FlipHorizontalTransformer();
+                break;
+            case FlipPage:
+                t = new FlipPageViewTransformer();
+                break;
+            case Foreground2Background:
+                t = new ForegroundToBackgroundTransformer();
+                break;
+            case RotateDown:
+                t = new RotateDownTransformer();
+                break;
+            case RotateUp:
+                t = new RotateUpTransformer();
+                break;
+            case Stack:
+                t = new StackTransformer();
+                break;
+            case Tablet:
+                t = new TabletTransformer();
+                break;
+            case ZoomIn:
+                t = new ZoomInTransformer();
+                break;
+            case ZoomOutSlide:
+                t = new ZoomOutSlideTransformer();
+                break;
+            case ZoomOut:
+                t = new ZoomOutTransformer();
+                break;
+        }
+        setPagerTransformer(true,t);
+    }
+
+
+
+    /**
+     * Set the visibility of the indicators.
+     * @param visibility
+     */
+    public void setIndicatorVisibility(PagerIndicator.IndicatorVisibility visibility){
+        if(mIndicator == null){
+            return;
+        }
+
+        mIndicator.setIndicatorVisibility(visibility);
+    }
+
+    public PagerIndicator.IndicatorVisibility getIndicatorVisibility(){
+        if(mIndicator == null){
+            return mIndicator.getIndicatorVisibility();
+        }
+        return PagerIndicator.IndicatorVisibility.Invisible;
+
+    }
+
+    /**
+     * get the {@link com.daimajia.slider.library.Indicators.PagerIndicator} instance.
+     * You can manipulate the properties of the indicator.
+     * @return
+     */
+    public PagerIndicator getPagerIndicator(){
