@@ -554,3 +554,89 @@ public class SliderLayout extends RelativeLayout{
      * @return
      */
     public PagerIndicator getPagerIndicator(){
+        return mIndicator;
+    }
+
+    public enum PresetIndicators{
+        Center_Bottom("Center_Bottom",R.id.default_center_bottom_indicator),
+        Right_Bottom("Right_Bottom",R.id.default_bottom_right_indicator),
+        Left_Bottom("Left_Bottom",R.id.default_bottom_left_indicator),
+        Center_Top("Center_Top",R.id.default_center_top_indicator),
+        Right_Top("Right_Top",R.id.default_center_top_right_indicator),
+        Left_Top("Left_Top",R.id.default_center_top_left_indicator);
+
+        private final String name;
+        private final int id;
+        private PresetIndicators(String name,int id){
+            this.name = name;
+            this.id = id;
+        }
+
+        public String toString(){
+            return name;
+        }
+
+        public int getResourceId(){
+            return id;
+        }
+    }
+    public void setPresetIndicator(PresetIndicators presetIndicator){
+        PagerIndicator pagerIndicator = (PagerIndicator)findViewById(presetIndicator.getResourceId());
+        setCustomIndicator(pagerIndicator);
+    }
+
+    private InfinitePagerAdapter getWrapperAdapter(){
+        PagerAdapter adapter = mViewPager.getAdapter();
+        if(adapter!=null){
+            return (InfinitePagerAdapter)adapter;
+        }else{
+            return null;
+        }
+    }
+
+    private SliderAdapter getRealAdapter(){
+        PagerAdapter adapter = mViewPager.getAdapter();
+        if(adapter!=null){
+            return ((InfinitePagerAdapter)adapter).getRealAdapter();
+        }
+        return null;
+    }
+
+    /**
+     * get the current item position
+     * @return
+     */
+    public int getCurrentPosition(){
+
+        if(getRealAdapter() == null)
+            throw new IllegalStateException("You did not set a slider adapter");
+
+        return mViewPager.getCurrentItem() % getRealAdapter().getCount();
+
+    }
+
+    /**
+     * get current slider.
+     * @return
+     */
+    public BaseSliderView getCurrentSlider(){
+
+        if(getRealAdapter() == null)
+            throw new IllegalStateException("You did not set a slider adapter");
+
+        int count = getRealAdapter().getCount();
+        int realCount = mViewPager.getCurrentItem() % count;
+        return  getRealAdapter().getSliderView(realCount);
+    }
+
+    /**
+     * remove  the slider at the position. Notice: It's a not perfect method, a very small bug still exists.
+     */
+    public void removeSliderAt(int position){
+        if(getRealAdapter()!=null){
+            getRealAdapter().removeSliderAt(position);
+            mViewPager.setCurrentItem(mViewPager.getCurrentItem(),false);
+        }
+    }
+
+    /**
