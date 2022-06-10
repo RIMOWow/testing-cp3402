@@ -640,3 +640,64 @@ public class SliderLayout extends RelativeLayout{
     }
 
     /**
+     * remove all the sliders. Notice: It's a not perfect method, a very small bug still exists.
+     */
+    public void removeAllSliders(){
+        if(getRealAdapter()!=null){
+            int count = getRealAdapter().getCount();
+            getRealAdapter().removeAllSliders();
+            //a small bug, but fixed by this trick.
+            //bug: when remove adapter's all the sliders.some caching slider still alive.
+            mViewPager.setCurrentItem(mViewPager.getCurrentItem() +  count,false);
+        }
+    }
+
+    /**
+     *set current slider
+     * @param position
+     */
+    public void setCurrentPosition(int position, boolean smooth) {
+        if (getRealAdapter() == null)
+            throw new IllegalStateException("You did not set a slider adapter");
+        if(position >= getRealAdapter().getCount()){
+            throw new IllegalStateException("Item position is not exist");
+        }
+        int p = mViewPager.getCurrentItem() % getRealAdapter().getCount();
+        int n = (position - p) + mViewPager.getCurrentItem();
+        mViewPager.setCurrentItem(n, smooth);
+    }
+
+    public void setCurrentPosition(int position) {
+        setCurrentPosition(position, true);
+    }
+
+    /**
+     * move to prev slide.
+     */
+    public void movePrevPosition(boolean smooth) {
+
+        if (getRealAdapter() == null)
+            throw new IllegalStateException("You did not set a slider adapter");
+
+        mViewPager.setCurrentItem(mViewPager.getCurrentItem() - 1, smooth);
+    }
+
+    public void movePrevPosition(){
+        movePrevPosition(true);
+    }
+
+    /**
+     * move to next slide.
+     */
+    public void moveNextPosition(boolean smooth) {
+
+        if (getRealAdapter() == null)
+            throw new IllegalStateException("You did not set a slider adapter");
+
+        mViewPager.setCurrentItem(mViewPager.getCurrentItem() + 1, smooth);
+    }
+
+    public void moveNextPosition() {
+        moveNextPosition(true);
+    }
+}
