@@ -100,3 +100,68 @@ public abstract class BaseSliderView {
      */
     public BaseSliderView description(String description){
         mDescription = description;
+        return this;
+    }
+
+    /**
+     * set a url as a image that preparing to load
+     * @param url
+     * @return
+     */
+    public BaseSliderView image(String url){
+        if(mFile != null || mRes != 0){
+            throw new IllegalStateException("Call multi image function," +
+                    "you only have permission to call it once");
+        }
+        mUrl = url;
+        return this;
+    }
+
+    /**
+     * set a file as a image that will to load
+     * @param file
+     * @return
+     */
+    public BaseSliderView image(File file){
+        if(mUrl != null || mRes != 0){
+            throw new IllegalStateException("Call multi image function," +
+                    "you only have permission to call it once");
+        }
+        mFile = file;
+        return this;
+    }
+
+    public BaseSliderView image(int res){
+        if(mUrl != null || mFile != null){
+            throw new IllegalStateException("Call multi image function," +
+                    "you only have permission to call it once");
+        }
+        mRes = res;
+        return this;
+    }
+
+    /**
+     * lets users add a bundle of additional information
+     * @param bundle
+     * @return
+     */
+    public BaseSliderView bundle(Bundle bundle){
+        mBundle = bundle;
+        return this;
+    }
+
+    public String getUrl(){
+        return mUrl;
+    }
+
+    public boolean isErrorDisappear(){
+        return mErrorDisappear;
+    }
+
+    public int getEmpty(){
+        return mEmptyPlaceHolderRes;
+    }
+
+    public int getError(){
+        return mErrorPlaceHolderRes;
+    }
