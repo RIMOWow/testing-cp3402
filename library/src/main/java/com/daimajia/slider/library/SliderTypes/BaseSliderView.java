@@ -250,3 +250,74 @@ public abstract class BaseSliderView {
                 if(v.findViewById(R.id.loading_bar) != null){
                     v.findViewById(R.id.loading_bar).setVisibility(View.INVISIBLE);
                 }
+            }
+
+            @Override
+            public void onError() {
+                if(mLoadListener != null){
+                    mLoadListener.onEnd(false,me);
+                }
+                if(v.findViewById(R.id.loading_bar) != null){
+                    v.findViewById(R.id.loading_bar).setVisibility(View.INVISIBLE);
+                }
+            }
+        });
+   }
+
+
+
+    public BaseSliderView setScaleType(ScaleType type){
+        mScaleType = type;
+        return this;
+    }
+
+    public ScaleType getScaleType(){
+        return mScaleType;
+    }
+
+    /**
+     * the extended class have to implement getView(), which is called by the adapter,
+     * every extended class response to render their own view.
+     * @return
+     */
+    public abstract View getView();
+
+    /**
+     * set a listener to get a message , if load error.
+     * @param l
+     */
+    public void setOnImageLoadListener(ImageLoadListener l){
+        mLoadListener = l;
+    }
+
+    public interface OnSliderClickListener {
+        public void onSliderClick(BaseSliderView slider);
+    }
+
+    /**
+     * when you have some extra information, please put it in this bundle.
+     * @return
+     */
+    public Bundle getBundle(){
+        return mBundle;
+    }
+
+    public interface ImageLoadListener{
+        public void onStart(BaseSliderView target);
+        public void onEnd(boolean result,BaseSliderView target);
+    }
+
+    /**
+     * Get the last instance set via setPicasso(), or null if no user provided instance was set
+     *
+     * @return The current user-provided Picasso instance, or null if none
+     */
+    public Picasso getPicasso() {
+        return mPicasso;
+    }
+
+    /**
+     * Provide a Picasso instance to use when loading pictures, this is useful if you have a
+     * particular HTTP cache you would like to share.
+     *
+     * @param picasso The Picasso instance to use, may be null to let the system use the default
