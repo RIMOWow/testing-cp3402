@@ -321,3 +321,9 @@ public abstract class BaseSliderView {
      * particular HTTP cache you would like to share.
      *
      * @param picasso The Picasso instance to use, may be null to let the system use the default
+     *                instance
+     */
+    public void setPicasso(Picasso picasso) {
+        mPicasso = picasso;
+    }
+}
