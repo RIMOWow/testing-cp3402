@@ -7,4 +7,6 @@ import android.view.View;
 
 import com.nineoldandroids.view.ViewHelper;
 
-publ
+public class AccordionTransformer extends BaseTransformer {
+
+    @Overri
