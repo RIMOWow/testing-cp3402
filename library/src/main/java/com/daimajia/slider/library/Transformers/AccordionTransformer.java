@@ -9,4 +9,6 @@ import com.nineoldandroids.view.ViewHelper;
 
 public class AccordionTransformer extends BaseTransformer {
 
-    @Overri
+    @Override
+    protected void onTransform(View view, float position) {
+        View
