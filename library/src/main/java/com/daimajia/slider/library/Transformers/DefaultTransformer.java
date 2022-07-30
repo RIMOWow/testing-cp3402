@@ -9,4 +9,8 @@ public class DefaultTransformer extends BaseTransformer {
 	}
 
 	@Override
-	public boolean isPa
+	public boolean isPagingEnabled() {
+		return true;
+	}
+
+}
