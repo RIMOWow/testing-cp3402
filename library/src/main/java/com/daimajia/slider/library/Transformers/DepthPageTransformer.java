@@ -4,4 +4,6 @@ import android.view.View;
 
 import com.nineoldandroids.view.ViewHelper;
 
-p
+public class DepthPageTransformer extends BaseTransformer {
+
+	private static final 
