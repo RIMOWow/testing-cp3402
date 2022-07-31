@@ -6,4 +6,7 @@ import com.nineoldandroids.view.ViewHelper;
 
 public class DepthPageTransformer extends BaseTransformer {
 
-	private static final 
+	private static final float MIN_SCALE = 0.75f;
+
+	@Override
+	protected void onTransform(View view,
