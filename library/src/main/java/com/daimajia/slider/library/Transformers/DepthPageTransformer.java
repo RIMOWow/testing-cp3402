@@ -11,4 +11,6 @@ public class DepthPageTransformer extends BaseTransformer {
 	@Override
 	protected void onTransform(View view, float position) {
 		if (position <= 0f) {
-            ViewHelper.setTransl
+            ViewHelper.setTranslationX(view,0f);
+            ViewHelper.setScaleX(view,1f);
+            ViewHelper.set
