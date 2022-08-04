@@ -15,4 +15,5 @@ public class DepthPageTransformer extends BaseTransformer {
             ViewHelper.setScaleX(view,1f);
             ViewHelper.setScaleY(view,1f);
 		} else if (position <= 1f) {
-			final float scaleFactor = MIN_SCALE +
+			final float scaleFactor = MIN_SCALE + (1 - MIN_SCALE) * (1 - Math.abs(position));
+            ViewHelper.set
