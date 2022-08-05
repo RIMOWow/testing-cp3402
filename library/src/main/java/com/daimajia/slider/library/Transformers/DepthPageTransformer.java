@@ -20,4 +20,11 @@ public class DepthPageTransformer extends BaseTransformer {
             ViewHelper.setPivotY(view,0.5f * view.getHeight());
             ViewHelper.setTranslationX(view,view.getWidth() * - position);
             ViewHelper.setScaleX(view,scaleFactor);
-            ViewHelper.setScaleY
+            ViewHelper.setScaleY(view,scaleFactor);
+		}
+	}
+
+	@Override
+	protected boolean isPagingEnabled() {
+		return true;
+	}
