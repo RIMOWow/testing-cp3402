@@ -17,4 +17,6 @@ public class DepthPageTransformer extends BaseTransformer {
 		} else if (position <= 1f) {
 			final float scaleFactor = MIN_SCALE + (1 - MIN_SCALE) * (1 - Math.abs(position));
             ViewHelper.setAlpha(view,1-position);
-            ViewHelper.setPivotY(view,0.5f * view.
+            ViewHelper.setPivotY(view,0.5f * view.getHeight());
+            ViewHelper.setTranslationX(view,view.getWidth() * - position);
+ 
