@@ -12,4 +12,5 @@ public class FadeTransformer extends BaseTransformer {
     @Override
     protected void onTransform(View view, float position) {
 
-        // Pag
+        // Page is not an immediate sibling, just make transparent
+        if(posi
