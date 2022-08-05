@@ -10,4 +10,6 @@ import com.nineoldandroids.view.ViewHelper;
 public class FadeTransformer extends BaseTransformer {
 
     @Override
- 
+    protected void onTransform(View view, float position) {
+
+        // Pag
