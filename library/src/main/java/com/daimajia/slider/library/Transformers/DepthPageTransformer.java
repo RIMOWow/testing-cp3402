@@ -28,3 +28,5 @@ public class DepthPageTransformer extends BaseTransformer {
 	protected boolean isPagingEnabled() {
 		return true;
 	}
+
+}
