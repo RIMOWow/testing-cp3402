@@ -13,4 +13,6 @@ public class FadeTransformer extends BaseTransformer {
     protected void onTransform(View view, float position) {
 
         // Page is not an immediate sibling, just make transparent
-        if(posi
+        if(position < -1 || position > 1) {
+            ViewHelper.setAlpha(view,0.6f);
+    
