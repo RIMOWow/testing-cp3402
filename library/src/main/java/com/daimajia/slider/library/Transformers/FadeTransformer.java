@@ -15,4 +15,6 @@ public class FadeTransformer extends BaseTransformer {
         // Page is not an immediate sibling, just make transparent
         if(position < -1 || position > 1) {
             ViewHelper.setAlpha(view,0.6f);
-    
+        }
+        // Page is sibling to left or right
+        else if (position <=
