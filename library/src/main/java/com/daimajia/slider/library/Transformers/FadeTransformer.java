@@ -17,4 +17,6 @@ public class FadeTransformer extends BaseTransformer {
             ViewHelper.setAlpha(view,0.6f);
         }
         // Page is sibling to left or right
-        else if (position <=
+        else if (position <= 0 || position <= 1) {
+
+            // Calculate alpha.  Position is decimal in [-1
