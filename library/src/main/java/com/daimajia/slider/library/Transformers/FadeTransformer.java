@@ -24,4 +24,6 @@ public class FadeTransformer extends BaseTransformer {
             ViewHelper.setAlpha(view,alpha);
 
         }
-        // Page is acti
+        // Page is active, make fully visible
+        else if (position == 0) {
+        
