@@ -21,4 +21,7 @@ public class FadeTransformer extends BaseTransformer {
 
             // Calculate alpha.  Position is decimal in [-1,0] or [0,1]
             float alpha = (position <= 0) ? position + 1 : 1 - position;
-   
+            ViewHelper.setAlpha(view,alpha);
+
+        }
+        // Page is acti
