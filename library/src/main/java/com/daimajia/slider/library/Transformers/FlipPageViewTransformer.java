@@ -6,4 +6,7 @@ import android.view.View;
 import com.daimajia.slider.library.Tricks.ViewPagerEx;
 import com.nineoldandroids.view.ViewHelper;
 
-public 
+public class FlipPageViewTransformer extends BaseTransformer {
+
+    @Override
+    pro
