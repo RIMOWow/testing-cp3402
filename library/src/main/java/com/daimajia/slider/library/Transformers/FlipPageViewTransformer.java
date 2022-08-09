@@ -9,4 +9,5 @@ import com.nineoldandroids.view.ViewHelper;
 public class FlipPageViewTransformer extends BaseTransformer {
 
     @Override
-    pro
+    protected void onTransform(View view, float position) {
+        float percen
