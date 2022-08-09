@@ -10,4 +10,6 @@ public class FlipPageViewTransformer extends BaseTransformer {
 
     @Override
     protected void onTransform(View view, float position) {
-        float percen
+        float percentage = 1 - Math.abs(position);
+        if(Build.VERSION.SDK_INT >= 13){
+           
