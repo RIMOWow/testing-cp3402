@@ -20,4 +20,5 @@ public class FlipPageViewTransformer extends BaseTransformer {
         setRotation(view, position, percentage);
     }
 
-    private void setVisibi
+    private void setVisibility(View page, float position) {
+        if (position < 0.5 && position > -
