@@ -16,4 +16,8 @@ public class FlipPageViewTransformer extends BaseTransformer {
         }
         setVisibility(view, position);
         setTranslation(view);
-        setSize(view, position, percent
+        setSize(view, position, percentage);
+        setRotation(view, position, percentage);
+    }
+
+    private void setVisibi
