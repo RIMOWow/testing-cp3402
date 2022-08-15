@@ -21,4 +21,7 @@ public class FlipPageViewTransformer extends BaseTransformer {
     }
 
     private void setVisibility(View page, float position) {
-        if (position < 0.5 && position > -
+        if (position < 0.5 && position > -0.5) {
+            page.setVisibility(View.VISIBLE);
+        } else {
+        
