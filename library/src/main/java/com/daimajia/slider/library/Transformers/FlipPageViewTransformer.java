@@ -14,4 +14,6 @@ public class FlipPageViewTransformer extends BaseTransformer {
         if(Build.VERSION.SDK_INT >= 13){
             view.setCameraDistance(12000);
         }
-        setVisibilit
+        setVisibility(view, position);
+        setTranslation(view);
+        setSize(view, position, percent
