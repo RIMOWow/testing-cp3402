@@ -28,4 +28,5 @@ public class FlipPageViewTransformer extends BaseTransformer {
         }
     }
 
-    private void setT
+    private void setTranslation(View view) {
+        ViewPagerEx viewPager = (ViewPagerEx) v
