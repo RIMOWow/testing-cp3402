@@ -29,4 +29,6 @@ public class FlipPageViewTransformer extends BaseTransformer {
     }
 
     private void setTranslation(View view) {
-        ViewPagerEx viewPager = (ViewPagerEx) v
+        ViewPagerEx viewPager = (ViewPagerEx) view.getParent();
+        int scroll = viewPager.getScrollX() - view.getLeft();
+   
