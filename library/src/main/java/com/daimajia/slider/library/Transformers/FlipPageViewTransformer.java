@@ -34,4 +34,5 @@ public class FlipPageViewTransformer extends BaseTransformer {
         ViewHelper.setTranslationX(view,scroll);
     }
 
-    private void setSize
+    private void setSize(View view, float position, float percentage) {
+        ViewHelper.setScaleX(view,(position
