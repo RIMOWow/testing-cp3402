@@ -35,4 +35,5 @@ public class FlipPageViewTransformer extends BaseTransformer {
     }
 
     private void setSize(View view, float position, float percentage) {
-        ViewHelper.setScaleX(view,(position
+        ViewHelper.setScaleX(view,(position != 0 && position != 1) ? percentage : 1);
+        ViewHel
