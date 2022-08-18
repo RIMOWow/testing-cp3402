@@ -39,4 +39,5 @@ public class FlipPageViewTransformer extends BaseTransformer {
         ViewHelper.setScaleY(view,(position != 0 && position != 1) ? percentage : 1);
     }
 
-    private void 
+    private void setRotation(View view, float position, float percentage) {
+        if (po
