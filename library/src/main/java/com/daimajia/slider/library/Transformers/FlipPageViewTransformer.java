@@ -43,4 +43,7 @@ public class FlipPageViewTransformer extends BaseTransformer {
         if (position > 0) {
             ViewHelper.setRotationY(view,-180 * (percentage + 1));
         } else {
-            ViewHelper.setRotationY(view,180 * (percentage + 1
+            ViewHelper.setRotationY(view,180 * (percentage + 1));
+        }
+    }
+}
