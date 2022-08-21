@@ -1,3 +1,7 @@
 package com.daimajia.slider.library.Transformers;
 
-import andr
+import android.view.View;
+
+import com.nineoldandroids.view.ViewHelper;
+
+public class RotateUpTra
