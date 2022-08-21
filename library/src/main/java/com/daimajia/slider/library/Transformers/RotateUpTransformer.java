@@ -10,4 +10,5 @@ public class RotateUpTransformer extends BaseTransformer {
 
 	@Override
 	protected void onTransform(View view, float position) {
-		final
+		final float width = view.getWidth();
+		final float rotation = ROT_MOD * positio
