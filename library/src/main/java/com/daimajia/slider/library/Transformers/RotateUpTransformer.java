@@ -6,4 +6,8 @@ import com.nineoldandroids.view.ViewHelper;
 
 public class RotateUpTransformer extends BaseTransformer {
 
-	private static final float ROT_MOD = 
+	private static final float ROT_MOD = -15f;
+
+	@Override
+	protected void onTransform(View view, float position) {
+		final
