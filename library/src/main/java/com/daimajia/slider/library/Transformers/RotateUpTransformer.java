@@ -14,4 +14,6 @@ public class RotateUpTransformer extends BaseTransformer {
 		final float rotation = ROT_MOD * position;
 
 		ViewHelper.setPivotX(view,width * 0.5f);
-        ViewHelper.setPivotY(view
+        ViewHelper.setPivotY(view,0f);
+        ViewHelper.setTranslationX(view,0f);
+        ViewHelper.setRot
