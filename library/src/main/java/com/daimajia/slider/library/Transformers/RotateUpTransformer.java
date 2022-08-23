@@ -16,4 +16,8 @@ public class RotateUpTransformer extends BaseTransformer {
 		ViewHelper.setPivotX(view,width * 0.5f);
         ViewHelper.setPivotY(view,0f);
         ViewHelper.setTranslationX(view,0f);
-        ViewHelper.setRot
+        ViewHelper.setRotation(view,rotation);
+	}
+	
+	@Override
+	protected boolean isPagingE
