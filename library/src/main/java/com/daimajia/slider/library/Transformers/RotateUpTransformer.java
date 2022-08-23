@@ -20,4 +20,8 @@ public class RotateUpTransformer extends BaseTransformer {
 	}
 	
 	@Override
-	protected boolean isPagingE
+	protected boolean isPagingEnabled() {
+		return true;
+	}
+
+}
