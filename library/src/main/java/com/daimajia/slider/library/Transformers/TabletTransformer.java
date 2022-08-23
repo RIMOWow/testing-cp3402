@@ -37,3 +37,5 @@ public class TabletTransformer extends BaseTransformer {
 		OFFSET_MATRIX.mapPoints(OFFSET_TEMP_FLOAT);
 		return (width - OFFSET_TEMP_FLOAT[0]) * (degrees > 0.0f ? 1.0f : -1.0f);
 	}
+
+}
