@@ -11,3 +11,5 @@ public class ZoomOutTransformer extends BaseTransformer {
         final float scale = 1f + Math.abs(position);
         ViewHelper.setScaleX(view,scale);
         ViewHelper.setScaleY(view,scale);
+        ViewHelper.setPivotX(view,view.getWidth() * 0.5f);
+        ViewHelper.se
