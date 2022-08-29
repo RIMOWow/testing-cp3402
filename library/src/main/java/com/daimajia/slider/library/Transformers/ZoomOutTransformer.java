@@ -16,4 +16,8 @@ public class ZoomOutTransformer extends BaseTransformer {
         ViewHelper.setAlpha(view,position < -1f || position > 1f ? 0f : 1f - (scale - 1f));
         if(position < -0.9){
             //-0.9 to prevent a small bug
-            ViewHelper.setTranslation
+            ViewHelper.setTranslationX(view,view.getWidth() * position);
+        }
+    }
+
+}
