@@ -11,4 +11,8 @@ import android.util.AttributeSet;
  */
 public class InfiniteViewPager extends ViewPagerEx {
 
-    public Infinit
+    public InfiniteViewPager(Context context) {
+        super(context);
+    }
+
+    public InfiniteVi
