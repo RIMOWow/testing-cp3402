@@ -15,4 +15,5 @@ public class InfiniteViewPager extends ViewPagerEx {
         super(context);
     }
 
-    public InfiniteVi
+    public InfiniteViewPager(Context context, AttributeSet attrs) {
+        super(context, attrs);
