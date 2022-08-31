@@ -17,3 +17,8 @@ public class InfiniteViewPager extends ViewPagerEx {
 
     public InfiniteViewPager(Context context, AttributeSet attrs) {
         super(context, attrs);
+    }
+
+    @Override
+    public void setAdapter(PagerAdapter adapter) {
+       
