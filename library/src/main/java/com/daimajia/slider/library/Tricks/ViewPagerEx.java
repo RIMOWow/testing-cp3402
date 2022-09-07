@@ -121,3 +121,90 @@ public class ViewPagerEx extends ViewGroup{
     };
 
     private static final Interpolator sInterpolator = new Interpolator() {
+        public float getInterpolation(float t) {
+            t -= 1.0f;
+            return t * t * t * t * t + 1.0f;
+        }
+    };
+
+    private final ArrayList<ItemInfo> mItems = new ArrayList<ItemInfo>();
+    private final ItemInfo mTempItem = new ItemInfo();
+
+    private final Rect mTempRect = new Rect();
+
+    private PagerAdapter mAdapter;
+    private int mCurItem;   // Index of currently displayed page.
+    private int mRestoredCurItem = -1;
+    private Parcelable mRestoredAdapterState = null;
+    private ClassLoader mRestoredClassLoader = null;
+    private Scroller mScroller;
+    private PagerObserver mObserver;
+
+    private int mPageMargin;
+    private Drawable mMarginDrawable;
+    private int mTopPageBounds;
+    private int mBottomPageBounds;
+
+    // Offsets of the first and last items, if known.
+    // Set during population, used to determine if we are at the beginning
+    // or end of the pager data set during touch scrolling.
+    private float mFirstOffset = -Float.MAX_VALUE;
+    private float mLastOffset = Float.MAX_VALUE;
+
+    private int mChildWidthMeasureSpec;
+    private int mChildHeightMeasureSpec;
+    private boolean mInLayout;
+
+    private boolean mScrollingCacheEnabled;
+
+    private boolean mPopulatePending;
+    private int mOffscreenPageLimit = DEFAULT_OFFSCREEN_PAGES;
+
+    private boolean mIsBeingDragged;
+    private boolean mIsUnableToDrag;
+    private boolean mIgnoreGutter;
+    private int mDefaultGutterSize;
+    private int mGutterSize;
+    private int mTouchSlop;
+    /**
+     * Position of the last motion event.
+     */
+    private float mLastMotionX;
+    private float mLastMotionY;
+    private float mInitialMotionX;
+    private float mInitialMotionY;
+    /**
+     * ID of the active pointer. This is used to retain consistency during
+     * drags/flings if multiple pointers are used.
+     */
+    private int mActivePointerId = INVALID_POINTER;
+    /**
+     * Sentinel value for no current active pointer.
+     * Used by {@link #mActivePointerId}.
+     */
+    private static final int INVALID_POINTER = -1;
+
+    /**
+     * Determines speed during touch scrolling
+     */
+    private VelocityTracker mVelocityTracker;
+    private int mMinimumVelocity;
+    private int mMaximumVelocity;
+    private int mFlingDistance;
+    private int mCloseEnough;
+
+    // If the pager is at least this close to its final position, complete the scroll
+    // on touch down and let the user interact with the content inside instead of
+    // "catching" the flinging pager.
+    private static final int CLOSE_ENOUGH = 2; // dp
+
+    private boolean mFakeDragging;
+    private long mFakeDragBeginTime;
+
+    private EdgeEffectCompat mLeftEdge;
+    private EdgeEffectCompat mRightEdge;
+
+    private boolean mFirstLayout = true;
+    private boolean mNeedCalculatePageOffsets = false;
+    private boolean mCalledSuper;
+    private int mDecorChildCount;
