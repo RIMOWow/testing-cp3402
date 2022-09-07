@@ -287,3 +287,76 @@ public class ViewPagerEx extends ViewGroup{
     /**
      * Simple implementation of the {@link OnPageChangeListener} interface with stub
      * implementations of each method. Extend this if you do not intend to override
+     * every method of {@link OnPageChangeListener}.
+     */
+    public static class SimpleOnPageChangeListener implements OnPageChangeListener {
+        @Override
+        public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+            // This space for rent
+        }
+
+        @Override
+        public void onPageSelected(int position) {
+            // This space for rent
+        }
+
+        @Override
+        public void onPageScrollStateChanged(int state) {
+            // This space for rent
+        }
+    }
+
+    private void triggerOnPageChangeEvent(int position) {
+        for (OnPageChangeListener eachListener : mOnPageChangeListeners) {
+            if (eachListener != null) {
+                InfinitePagerAdapter infiniteAdapter = (InfinitePagerAdapter)mAdapter;
+                if (infiniteAdapter.getRealCount() == 0) {
+                    return;
+                }
+                int n = position % infiniteAdapter.getRealCount();
+                eachListener.onPageSelected(n);
+            }
+        }
+        if (mInternalPageChangeListener != null) {
+            mInternalPageChangeListener.onPageSelected(position);
+        }
+    }
+    /**
+     * A PageTransformer is invoked whenever a visible/attached page is scrolled.
+     * This offers an opportunity for the application to apply a custom transformation
+     * to the page views using animation properties.
+     *
+     * <p>As property animation is only supported as of Android 3.0 and forward,
+     * setting a PageTransformer on a ViewPager on earlier platform versions will
+     * be ignored.</p>
+     */
+    public interface PageTransformer {
+        /**
+         * Apply a property transformation to the given page.
+         *
+         * @param page Apply the transformation to this page
+         * @param position Position of page relative to the current front-and-center
+         *                 position of the pager. 0 is front and center. 1 is one full
+         *                 page position to the right, and -1 is one page position to the left.
+         */
+        public void transformPage(View page, float position);
+
+    }
+
+    /**
+     * Used internally to monitor when adapters are switched.
+     */
+    interface OnAdapterChangeListener {
+        public void onAdapterChanged(PagerAdapter oldAdapter, PagerAdapter newAdapter);
+    }
+
+    /**
+     * Used internally to tag special types of child views that should be added as
+     * pager decorations by default.
+     */
+    interface Decor {}
+
+    public ViewPagerEx(Context context) {
+        super(context);
+        initViewPager();
+    }
