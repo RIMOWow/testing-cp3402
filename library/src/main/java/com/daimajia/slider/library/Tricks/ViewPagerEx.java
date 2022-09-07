@@ -360,3 +360,90 @@ public class ViewPagerEx extends ViewGroup{
         super(context);
         initViewPager();
     }
+
+    public ViewPagerEx(Context context, AttributeSet attrs) {
+        super(context, attrs);
+        initViewPager();
+    }
+
+    void initViewPager() {
+        setWillNotDraw(false);
+        setDescendantFocusability(FOCUS_AFTER_DESCENDANTS);
+        setFocusable(true);
+        final Context context = getContext();
+        mScroller = new Scroller(context, sInterpolator);
+        final ViewConfiguration configuration = ViewConfiguration.get(context);
+        final float density = context.getResources().getDisplayMetrics().density;
+
+        mTouchSlop = ViewConfigurationCompat.getScaledPagingTouchSlop(configuration);
+        mMinimumVelocity = (int) (MIN_FLING_VELOCITY * density);
+        mMaximumVelocity = configuration.getScaledMaximumFlingVelocity();
+        mLeftEdge = new EdgeEffectCompat(context);
+        mRightEdge = new EdgeEffectCompat(context);
+
+        mFlingDistance = (int) (MIN_DISTANCE_FOR_FLING * density);
+        mCloseEnough = (int) (CLOSE_ENOUGH * density);
+        mDefaultGutterSize = (int) (DEFAULT_GUTTER_SIZE * density);
+
+        ViewCompat.setAccessibilityDelegate(this, new MyAccessibilityDelegate());
+
+        if (ViewCompat.getImportantForAccessibility(this)
+                == ViewCompat.IMPORTANT_FOR_ACCESSIBILITY_AUTO) {
+            ViewCompat.setImportantForAccessibility(this,
+                    ViewCompat.IMPORTANT_FOR_ACCESSIBILITY_YES);
+        }
+    }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        removeCallbacks(mEndScrollRunnable);
+        super.onDetachedFromWindow();
+    }
+
+    private void setScrollState(int newState) {
+        if (mScrollState == newState) {
+            return;
+        }
+
+        mScrollState = newState;
+        if (mPageTransformer != null) {
+            // PageTransformers can do complex things that benefit from hardware layers.
+            enableLayers(newState != SCROLL_STATE_IDLE);
+        }
+        for (OnPageChangeListener eachListener : mOnPageChangeListeners) {
+            if (eachListener != null) {
+                eachListener.onPageScrollStateChanged(newState);
+            }
+        }
+    }
+
+    /**
+     * Set a PagerAdapter that will supply views for this pager as needed.
+     *
+     * @param adapter Adapter to use
+     */
+    public void setAdapter(PagerAdapter adapter) {
+        if (mAdapter != null) {
+            mAdapter.unregisterDataSetObserver(mObserver);
+            mAdapter.startUpdate(this);
+            for (int i = 0; i < mItems.size(); i++) {
+                final ItemInfo ii = mItems.get(i);
+                mAdapter.destroyItem(this, ii.position, ii.object);
+            }
+            mAdapter.finishUpdate(this);
+            mItems.clear();
+            removeNonDecorViews();
+            mCurItem = 0;
+            scrollTo(0, 0);
+        }
+
+        final PagerAdapter oldAdapter = mAdapter;
+        mAdapter = adapter;
+        mExpectedAdapterCount = 0;
+
+        if (mAdapter != null) {
+            if (mObserver == null) {
+                mObserver = new PagerObserver();
+            }
+            mAdapter.registerDataSetObserver(mObserver);
+            mPopulatePending = false;
