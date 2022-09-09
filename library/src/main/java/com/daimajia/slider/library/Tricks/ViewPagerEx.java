@@ -603,3 +603,78 @@ public class ViewPagerEx extends ViewGroup{
 
     /**
      * Remove a listener that was added with addOnPageChangeListener
+     * See {@link OnPageChangeListener}.
+     *
+     * @param listener Listener to remove
+     */
+    public void removeOnPageChangeListener(OnPageChangeListener listener) {
+        mOnPageChangeListeners.remove(listener);
+    }
+
+    /**
+     * Set a {@link PageTransformer} that will be called for each attached page whenever
+     * the scroll position is changed. This allows the application to apply custom property
+     * transformations to each page, overriding the default sliding look and feel.
+     *
+     * <p><em>Note:</em> Prior to Android 3.0 the property animation APIs did not exist.
+     * As a result, setting a PageTransformer prior to Android 3.0 (API 11) will have no effect.</p>
+     *
+     * @param reverseDrawingOrder true if the supplied PageTransformer requires page views
+     *                            to be drawn from last to first instead of first to last.
+     * @param transformer PageTransformer that will modify each page's animation properties
+     */
+    public void setPageTransformer(boolean reverseDrawingOrder, PageTransformer transformer) {
+        final boolean hasTransformer = transformer != null;
+        final boolean needsPopulate = hasTransformer != (mPageTransformer != null);
+        mPageTransformer = transformer;
+        setChildrenDrawingOrderEnabledCompat(hasTransformer);
+        if (hasTransformer) {
+            mDrawingOrder = reverseDrawingOrder ? DRAW_ORDER_REVERSE : DRAW_ORDER_FORWARD;
+        } else {
+            mDrawingOrder = DRAW_ORDER_DEFAULT;
+        }
+        if (needsPopulate) populate();
+    }
+
+    void setChildrenDrawingOrderEnabledCompat(boolean enable) {
+        if (Build.VERSION.SDK_INT >= 7) {
+            if (mSetChildrenDrawingOrderEnabled == null) {
+                try {
+                    mSetChildrenDrawingOrderEnabled = ViewGroup.class.getDeclaredMethod(
+                            "setChildrenDrawingOrderEnabled", new Class[] { Boolean.TYPE });
+                } catch (NoSuchMethodException e) {
+                    Log.e(TAG, "Can't find setChildrenDrawingOrderEnabled", e);
+                }
+            }
+            try {
+                mSetChildrenDrawingOrderEnabled.invoke(this, enable);
+            } catch (Exception e) {
+                Log.e(TAG, "Error changing children drawing order", e);
+            }
+        }
+    }
+
+    @Override
+    protected int getChildDrawingOrder(int childCount, int i) {
+        final int index = mDrawingOrder == DRAW_ORDER_REVERSE ? childCount - 1 - i : i;
+        final int result = ((LayoutParams) mDrawingOrderedChildren.get(index).getLayoutParams()).childIndex;
+        return result;
+    }
+
+    /**
+     * Set a separate OnPageChangeListener for internal use by the support library.
+     *
+     * @param listener Listener to set
+     * @return The old listener that was set, if any.
+     */
+    OnPageChangeListener setInternalPageChangeListener(OnPageChangeListener listener) {
+        OnPageChangeListener oldListener = mInternalPageChangeListener;
+        mInternalPageChangeListener = listener;
+        return oldListener;
+    }
+
+    /**
+     * Returns the number of pages that will be retained to either side of the
+     * current page in the view hierarchy in an idle state. Defaults to 1.
+     *
+     * @return How many pages will be kept offscreen on either side
