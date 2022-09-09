@@ -1105,3 +1105,86 @@ public class ViewPagerEx extends ViewGroup{
         if (hasFocus()) {
             View currentFocused = findFocus();
             ItemInfo ii = currentFocused != null ? infoForAnyChild(currentFocused) : null;
+            if (ii == null || ii.position != mCurItem) {
+                for (int i=0; i<getChildCount(); i++) {
+                    View child = getChildAt(i);
+                    ii = infoForChild(child);
+                    if (ii != null && ii.position == mCurItem) {
+                        if (child.requestFocus(focusDirection)) {
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private void sortChildDrawingOrder() {
+        if (mDrawingOrder != DRAW_ORDER_DEFAULT) {
+            if (mDrawingOrderedChildren == null) {
+                mDrawingOrderedChildren = new ArrayList<View>();
+            } else {
+                mDrawingOrderedChildren.clear();
+            }
+            final int childCount = getChildCount();
+            for (int i = 0; i < childCount; i++) {
+                final View child = getChildAt(i);
+                mDrawingOrderedChildren.add(child);
+            }
+            Collections.sort(mDrawingOrderedChildren, sPositionComparator);
+        }
+    }
+
+    private void calculatePageOffsets(ItemInfo curItem, int curIndex, ItemInfo oldCurInfo) {
+        final int N = mAdapter.getCount();
+        final int width = getClientWidth();
+        final float marginOffset = width > 0 ? (float) mPageMargin / width : 0;
+        // Fix up offsets for later layout.
+        if (oldCurInfo != null) {
+            final int oldCurPosition = oldCurInfo.position;
+            // Base offsets off of oldCurInfo.
+            if (oldCurPosition < curItem.position) {
+                int itemIndex = 0;
+                ItemInfo ii = null;
+                float offset = oldCurInfo.offset + oldCurInfo.widthFactor + marginOffset;
+                for (int pos = oldCurPosition + 1;
+                     pos <= curItem.position && itemIndex < mItems.size(); pos++) {
+                    ii = mItems.get(itemIndex);
+                    while (pos > ii.position && itemIndex < mItems.size() - 1) {
+                        itemIndex++;
+                        ii = mItems.get(itemIndex);
+                    }
+                    while (pos < ii.position) {
+                        // We don't have an item populated for this,
+                        // ask the adapter for an offset.
+                        offset += mAdapter.getPageWidth(pos) + marginOffset;
+                        pos++;
+                    }
+                    ii.offset = offset;
+                    offset += ii.widthFactor + marginOffset;
+                }
+            } else if (oldCurPosition > curItem.position) {
+                int itemIndex = mItems.size() - 1;
+                ItemInfo ii = null;
+                float offset = oldCurInfo.offset;
+                for (int pos = oldCurPosition - 1;
+                     pos >= curItem.position && itemIndex >= 0; pos--) {
+                    ii = mItems.get(itemIndex);
+                    while (pos < ii.position && itemIndex > 0) {
+                        itemIndex--;
+                        ii = mItems.get(itemIndex);
+                    }
+                    while (pos > ii.position) {
+                        // We don't have an item populated for this,
+                        // ask the adapter for an offset.
+                        offset -= mAdapter.getPageWidth(pos) + marginOffset;
+                        pos--;
+                    }
+                    offset -= ii.widthFactor + marginOffset;
+                    ii.offset = offset;
+                }
+            }
+        }
+
+        // Base all offsets off of curItem.
+        final int itemCount = mItems.size();
