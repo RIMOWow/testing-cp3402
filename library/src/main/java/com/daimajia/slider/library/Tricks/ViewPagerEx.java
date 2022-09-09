@@ -447,3 +447,78 @@ public class ViewPagerEx extends ViewGroup{
             }
             mAdapter.registerDataSetObserver(mObserver);
             mPopulatePending = false;
+            final boolean wasFirstLayout = mFirstLayout;
+            mFirstLayout = true;
+            mExpectedAdapterCount = mAdapter.getCount();
+            if (mRestoredCurItem >= 0) {
+                mAdapter.restoreState(mRestoredAdapterState, mRestoredClassLoader);
+                setCurrentItemInternal(mRestoredCurItem, false, true);
+                mRestoredCurItem = -1;
+                mRestoredAdapterState = null;
+                mRestoredClassLoader = null;
+            } else if (!wasFirstLayout) {
+                populate();
+            } else {
+                requestLayout();
+            }
+        }
+
+        if (mAdapterChangeListener != null && oldAdapter != adapter) {
+            mAdapterChangeListener.onAdapterChanged(oldAdapter, adapter);
+        }
+    }
+
+    private void removeNonDecorViews() {
+        for (int i = 0; i < getChildCount(); i++) {
+            final View child = getChildAt(i);
+            final LayoutParams lp = (LayoutParams) child.getLayoutParams();
+            if (!lp.isDecor) {
+                removeViewAt(i);
+                i--;
+            }
+        }
+    }
+
+    /**
+     * Retrieve the current adapter supplying pages.
+     *
+     * @return The currently registered PagerAdapter
+     */
+    public PagerAdapter getAdapter() {
+        return mAdapter;
+    }
+
+    void setOnAdapterChangeListener(OnAdapterChangeListener listener) {
+        mAdapterChangeListener = listener;
+    }
+
+    private int getClientWidth() {
+        return getMeasuredWidth() - getPaddingLeft() - getPaddingRight();
+    }
+
+    /**
+     * Set the currently selected page. If the ViewPager has already been through its first
+     * layout with its current adapter there will be a smooth animated transition between
+     * the current item and the specified item.
+     *
+     * @param item Item index to select
+     */
+    public void setCurrentItem(int item) {
+        mPopulatePending = false;
+        setCurrentItemInternal(item, !mFirstLayout, false);
+    }
+
+    /**
+     * Set the currently selected page.
+     *
+     * @param item Item index to select
+     * @param smoothScroll True to smoothly scroll to the new item, false to transition immediately
+     */
+    public void setCurrentItem(int item, boolean smoothScroll) {
+        mPopulatePending = false;
+        setCurrentItemInternal(item, smoothScroll, false);
+    }
+
+    public int getCurrentItem() {
+        return mCurItem;
+    }
