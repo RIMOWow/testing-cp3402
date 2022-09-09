@@ -748,3 +748,89 @@ public class ViewPagerEx extends ViewGroup{
     public void setPageMarginDrawable(Drawable d) {
         mMarginDrawable = d;
         if (d != null) refreshDrawableState();
+        setWillNotDraw(d == null);
+        invalidate();
+    }
+
+    /**
+     * Set a drawable that will be used to fill the margin between pages.
+     *
+     * @param resId Resource ID of a drawable to display between pages
+     */
+    public void setPageMarginDrawable(int resId) {
+        setPageMarginDrawable(getContext().getResources().getDrawable(resId));
+    }
+
+    @Override
+    protected boolean verifyDrawable(Drawable who) {
+        return super.verifyDrawable(who) || who == mMarginDrawable;
+    }
+
+    @Override
+    protected void drawableStateChanged() {
+        super.drawableStateChanged();
+        final Drawable d = mMarginDrawable;
+        if (d != null && d.isStateful()) {
+            d.setState(getDrawableState());
+        }
+    }
+
+    // We want the duration of the page snap animation to be influenced by the distance that
+    // the screen has to travel, however, we don't want this duration to be effected in a
+    // purely linear fashion. Instead, we use this method to moderate the effect that the distance
+    // of travel has on the overall snap duration.
+    float distanceInfluenceForSnapDuration(float f) {
+        f -= 0.5f; // center the values about 0.
+        f *= 0.3f * Math.PI / 2.0f;
+        return (float) Math.sin(f);
+    }
+
+    /**
+     * Like {@link View#scrollBy}, but scroll smoothly instead of immediately.
+     *
+     * @param x the number of pixels to scroll by on the X axis
+     * @param y the number of pixels to scroll by on the Y axis
+     */
+    void smoothScrollTo(int x, int y) {
+        smoothScrollTo(x, y, 0);
+    }
+
+    /**
+     * Like {@link View#scrollBy}, but scroll smoothly instead of immediately.
+     *
+     * @param x the number of pixels to scroll by on the X axis
+     * @param y the number of pixels to scroll by on the Y axis
+     * @param velocity the velocity associated with a fling, if applicable. (0 otherwise)
+     */
+    void smoothScrollTo(int x, int y, int velocity) {
+        if (getChildCount() == 0) {
+            // Nothing to do.
+            setScrollingCacheEnabled(false);
+            return;
+        }
+        int sx = getScrollX();
+        int sy = getScrollY();
+        int dx = x - sx;
+        int dy = y - sy;
+        if (dx == 0 && dy == 0) {
+            completeScroll(false);
+            populate();
+            setScrollState(SCROLL_STATE_IDLE);
+            return;
+        }
+
+        setScrollingCacheEnabled(true);
+        setScrollState(SCROLL_STATE_SETTLING);
+
+        final int width = getClientWidth();
+        final int halfWidth = width / 2;
+        final float distanceRatio = Math.min(1f, 1.0f * Math.abs(dx) / width);
+        final float distance = halfWidth + halfWidth *
+                distanceInfluenceForSnapDuration(distanceRatio);
+
+        int duration = 0;
+        velocity = Math.abs(velocity);
+        if (velocity > 0) {
+            duration = 4 * Math.round(1000 * Math.abs(distance / velocity));
+        } else {
+            final float pageWidth = width * mAdapter.getPageWidth(mCurItem);
