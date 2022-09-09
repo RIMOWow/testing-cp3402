@@ -834,3 +834,86 @@ public class ViewPagerEx extends ViewGroup{
             duration = 4 * Math.round(1000 * Math.abs(distance / velocity));
         } else {
             final float pageWidth = width * mAdapter.getPageWidth(mCurItem);
+            final float pageDelta = (float) Math.abs(dx) / (pageWidth + mPageMargin);
+            duration = (int) ((pageDelta + 1) * 100);
+        }
+        duration = Math.min(duration, MAX_SETTLE_DURATION);
+
+        mScroller.startScroll(sx, sy, dx, dy, duration);
+        ViewCompat.postInvalidateOnAnimation(this);
+    }
+
+    ItemInfo addNewItem(int position, int index) {
+        ItemInfo ii = new ItemInfo();
+        ii.position = position;
+        ii.object = mAdapter.instantiateItem(this, position);
+        ii.widthFactor = mAdapter.getPageWidth(position);
+        if (index < 0 || index >= mItems.size()) {
+            mItems.add(ii);
+        } else {
+            mItems.add(index, ii);
+        }
+        return ii;
+    }
+
+    void dataSetChanged() {
+        // This method only gets called if our observer is attached, so mAdapter is non-null.
+
+        final int adapterCount = mAdapter.getCount();
+        mExpectedAdapterCount = adapterCount;
+        boolean needPopulate = mItems.size() < mOffscreenPageLimit * 2 + 1 &&
+                mItems.size() < adapterCount;
+        int newCurrItem = mCurItem;
+
+        boolean isUpdating = false;
+        for (int i = 0; i < mItems.size(); i++) {
+            final ItemInfo ii = mItems.get(i);
+            final int newPos = mAdapter.getItemPosition(ii.object);
+
+            if (newPos == PagerAdapter.POSITION_UNCHANGED) {
+                continue;
+            }
+
+            if (newPos == PagerAdapter.POSITION_NONE) {
+                mItems.remove(i);
+                i--;
+
+                if (!isUpdating) {
+                    mAdapter.startUpdate(this);
+                    isUpdating = true;
+                }
+
+                mAdapter.destroyItem(this, ii.position, ii.object);
+                needPopulate = true;
+
+                if (mCurItem == ii.position) {
+                    // Keep the current item in the valid range
+                    newCurrItem = Math.max(0, Math.min(mCurItem, adapterCount - 1));
+                    needPopulate = true;
+                }
+                continue;
+            }
+
+            if (ii.position != newPos) {
+                if (ii.position == mCurItem) {
+                    // Our current item changed position. Follow it.
+                    newCurrItem = newPos;
+                }
+
+                ii.position = newPos;
+                needPopulate = true;
+            }
+        }
+
+        if (isUpdating) {
+            mAdapter.finishUpdate(this);
+        }
+
+        Collections.sort(mItems, COMPARATOR);
+
+        if (needPopulate) {
+            // Reset our known page widths; populate will recompute them.
+            final int childCount = getChildCount();
+            for (int i = 0; i < childCount; i++) {
+                final View child = getChildAt(i);
+                final LayoutParams lp = (LayoutParams) child.getLayoutParams();
