@@ -1261,3 +1261,72 @@ public class ViewPagerEx extends ViewGroup{
             public SavedState[] newArray(int size) {
                 return new SavedState[size];
             }
+        });
+
+        SavedState(Parcel in, ClassLoader loader) {
+            super(in);
+            if (loader == null) {
+                loader = getClass().getClassLoader();
+            }
+            position = in.readInt();
+            adapterState = in.readParcelable(loader);
+            this.loader = loader;
+        }
+    }
+
+    @Override
+    public Parcelable onSaveInstanceState() {
+        Parcelable superState = super.onSaveInstanceState();
+        SavedState ss = new SavedState(superState);
+        ss.position = mCurItem;
+        if (mAdapter != null) {
+            ss.adapterState = mAdapter.saveState();
+        }
+        return ss;
+    }
+
+    @Override
+    public void onRestoreInstanceState(Parcelable state) {
+        if (!(state instanceof SavedState)) {
+            super.onRestoreInstanceState(state);
+            return;
+        }
+
+        SavedState ss = (SavedState)state;
+        super.onRestoreInstanceState(ss.getSuperState());
+
+        if (mAdapter != null) {
+            mAdapter.restoreState(ss.adapterState, ss.loader);
+            setCurrentItemInternal(ss.position, false, true);
+        } else {
+            mRestoredCurItem = ss.position;
+            mRestoredAdapterState = ss.adapterState;
+            mRestoredClassLoader = ss.loader;
+        }
+    }
+
+    @Override
+    public void addView(View child, int index, ViewGroup.LayoutParams params) {
+        if (!checkLayoutParams(params)) {
+            params = generateLayoutParams(params);
+        }
+        final LayoutParams lp = (LayoutParams) params;
+        lp.isDecor |= child instanceof Decor;
+        if (mInLayout) {
+            if (lp != null && lp.isDecor) {
+                throw new IllegalStateException("Cannot add pager decor view during layout");
+            }
+            lp.needsMeasure = true;
+            addViewInLayout(child, index, params);
+        } else {
+            super.addView(child, index, params);
+        }
+
+        if (USE_CACHE) {
+            if (child.getVisibility() != GONE) {
+                child.setDrawingCacheEnabled(mScrollingCacheEnabled);
+            } else {
+                child.setDrawingCacheEnabled(false);
+            }
+        }
+    }
