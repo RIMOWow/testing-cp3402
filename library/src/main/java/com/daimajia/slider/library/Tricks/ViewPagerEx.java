@@ -1330,3 +1330,74 @@ public class ViewPagerEx extends ViewGroup{
             }
         }
     }
+
+    @Override
+    public void removeView(View view) {
+        if (mInLayout) {
+            removeViewInLayout(view);
+        } else {
+            super.removeView(view);
+        }
+    }
+
+    ItemInfo infoForChild(View child) {
+        for (int i=0; i<mItems.size(); i++) {
+            ItemInfo ii = mItems.get(i);
+            if (mAdapter.isViewFromObject(child, ii.object)) {
+                return ii;
+            }
+        }
+        return null;
+    }
+
+    ItemInfo infoForAnyChild(View child) {
+        ViewParent parent;
+        while ((parent=child.getParent()) != this) {
+            if (parent == null || !(parent instanceof View)) {
+                return null;
+            }
+            child = (View)parent;
+        }
+        return infoForChild(child);
+    }
+
+    ItemInfo infoForPosition(int position) {
+        for (int i = 0; i < mItems.size(); i++) {
+            ItemInfo ii = mItems.get(i);
+            if (ii.position == position) {
+                return ii;
+            }
+        }
+        return null;
+    }
+
+    @Override
+    protected void onAttachedToWindow() {
+        super.onAttachedToWindow();
+        mFirstLayout = true;
+    }
+
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        // For simple implementation, our internal size is always 0.
+        // We depend on the container to specify the layout size of
+        // our view.  We can't really know what it is since we will be
+        // adding and removing different arbitrary views and do not
+        // want the layout to change as this happens.
+        setMeasuredDimension(getDefaultSize(0, widthMeasureSpec),
+                getDefaultSize(0, heightMeasureSpec));
+
+        final int measuredWidth = getMeasuredWidth();
+        final int maxGutterSize = measuredWidth / 10;
+        mGutterSize = Math.min(maxGutterSize, mDefaultGutterSize);
+
+        // Children are just made to fill our space.
+        int childWidthSize = measuredWidth - getPaddingLeft() - getPaddingRight();
+        int childHeightSize = getMeasuredHeight() - getPaddingTop() - getPaddingBottom();
+
+        /*
+         * Make sure all children have been properly measured. Decor views first.
+         * Right now we cheat and make this less complicated by assuming decor
+         * views won't intersect. We will pin to edges based on gravity.
+         */
+        int size = getChildCount();
