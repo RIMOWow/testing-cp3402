@@ -1188,3 +1188,76 @@ public class ViewPagerEx extends ViewGroup{
 
         // Base all offsets off of curItem.
         final int itemCount = mItems.size();
+        float offset = curItem.offset;
+        int pos = curItem.position - 1;
+        mFirstOffset = curItem.position == 0 ? curItem.offset : -Float.MAX_VALUE;
+        mLastOffset = curItem.position == N - 1 ?
+                curItem.offset + curItem.widthFactor - 1 : Float.MAX_VALUE;
+        // Previous pages
+        for (int i = curIndex - 1; i >= 0; i--, pos--) {
+            final ItemInfo ii = mItems.get(i);
+            while (pos > ii.position) {
+                offset -= mAdapter.getPageWidth(pos--) + marginOffset;
+            }
+            offset -= ii.widthFactor + marginOffset;
+            ii.offset = offset;
+            if (ii.position == 0) mFirstOffset = offset;
+        }
+        offset = curItem.offset + curItem.widthFactor + marginOffset;
+        pos = curItem.position + 1;
+        // Next pages
+        for (int i = curIndex + 1; i < itemCount; i++, pos++) {
+            final ItemInfo ii = mItems.get(i);
+            while (pos < ii.position) {
+                offset += mAdapter.getPageWidth(pos++) + marginOffset;
+            }
+            if (ii.position == N - 1) {
+                mLastOffset = offset + ii.widthFactor - 1;
+            }
+            ii.offset = offset;
+            offset += ii.widthFactor + marginOffset;
+        }
+
+        mNeedCalculatePageOffsets = false;
+    }
+
+    /**
+     * This is the persistent state that is saved by ViewPager.  Only needed
+     * if you are creating a sublass of ViewPager that must save its own
+     * state, in which case it should implement a subclass of this which
+     * contains that state.
+     */
+    public static class SavedState extends BaseSavedState {
+        int position;
+        Parcelable adapterState;
+        ClassLoader loader;
+
+        public SavedState(Parcelable superState) {
+            super(superState);
+        }
+
+        @Override
+        public void writeToParcel(Parcel out, int flags) {
+            super.writeToParcel(out, flags);
+            out.writeInt(position);
+            out.writeParcelable(adapterState, flags);
+        }
+
+        @Override
+        public String toString() {
+            return "FragmentPager.SavedState{"
+                    + Integer.toHexString(System.identityHashCode(this))
+                    + " position=" + position + "}";
+        }
+
+        public static final Parcelable.Creator<SavedState> CREATOR
+                = ParcelableCompat.newCreator(new ParcelableCompatCreatorCallbacks<SavedState>() {
+            @Override
+            public SavedState createFromParcel(Parcel in, ClassLoader loader) {
+                return new SavedState(in, loader);
+            }
+
+            @Override
+            public SavedState[] newArray(int size) {
+                return new SavedState[size];
+            }
