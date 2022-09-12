@@ -1493,3 +1493,87 @@ public class ViewPagerEx extends ViewGroup{
 
             scrollTo(newOffsetPixels, getScrollY());
             if (!mScroller.isFinished()) {
+                // We now return to your regularly scheduled scroll, already in progress.
+                final int newDuration = mScroller.getDuration() - mScroller.timePassed();
+                ItemInfo targetInfo = infoForPosition(mCurItem);
+                mScroller.startScroll(newOffsetPixels, 0,
+                        (int) (targetInfo.offset * width), 0, newDuration);
+            }
+        } else {
+            final ItemInfo ii = infoForPosition(mCurItem);
+            final float scrollOffset = ii != null ? Math.min(ii.offset, mLastOffset) : 0;
+            final int scrollPos = (int) (scrollOffset *
+                    (width - getPaddingLeft() - getPaddingRight()));
+            if (scrollPos != getScrollX()) {
+                completeScroll(false);
+                scrollTo(scrollPos, getScrollY());
+            }
+        }
+    }
+
+    @Override
+    protected void onLayout(boolean changed, int l, int t, int r, int b) {
+        final int count = getChildCount();
+        int width = r - l;
+        int height = b - t;
+        int paddingLeft = getPaddingLeft();
+        int paddingTop = getPaddingTop();
+        int paddingRight = getPaddingRight();
+        int paddingBottom = getPaddingBottom();
+        final int scrollX = getScrollX();
+
+        int decorCount = 0;
+
+        // First pass - decor views. We need to do this in two passes so that
+        // we have the proper offsets for non-decor views later.
+        for (int i = 0; i < count; i++) {
+            final View child = getChildAt(i);
+            if (child.getVisibility() != GONE) {
+                final LayoutParams lp = (LayoutParams) child.getLayoutParams();
+                int childLeft = 0;
+                int childTop = 0;
+                if (lp.isDecor) {
+                    final int hgrav = lp.gravity & Gravity.HORIZONTAL_GRAVITY_MASK;
+                    final int vgrav = lp.gravity & Gravity.VERTICAL_GRAVITY_MASK;
+                    switch (hgrav) {
+                        default:
+                            childLeft = paddingLeft;
+                            break;
+                        case Gravity.LEFT:
+                            childLeft = paddingLeft;
+                            paddingLeft += child.getMeasuredWidth();
+                            break;
+                        case Gravity.CENTER_HORIZONTAL:
+                            childLeft = Math.max((width - child.getMeasuredWidth()) / 2,
+                                    paddingLeft);
+                            break;
+                        case Gravity.RIGHT:
+                            childLeft = width - paddingRight - child.getMeasuredWidth();
+                            paddingRight += child.getMeasuredWidth();
+                            break;
+                    }
+                    switch (vgrav) {
+                        default:
+                            childTop = paddingTop;
+                            break;
+                        case Gravity.TOP:
+                            childTop = paddingTop;
+                            paddingTop += child.getMeasuredHeight();
+                            break;
+                        case Gravity.CENTER_VERTICAL:
+                            childTop = Math.max((height - child.getMeasuredHeight()) / 2,
+                                    paddingTop);
+                            break;
+                        case Gravity.BOTTOM:
+                            childTop = height - paddingBottom - child.getMeasuredHeight();
+                            paddingBottom += child.getMeasuredHeight();
+                            break;
+                    }
+                    childLeft += scrollX;
+                    child.layout(childLeft, childTop,
+                            childLeft + child.getMeasuredWidth(),
+                            childTop + child.getMeasuredHeight());
+                    decorCount++;
+                }
+            }
+        }
