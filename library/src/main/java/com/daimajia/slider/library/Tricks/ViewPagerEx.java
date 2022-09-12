@@ -1955,3 +1955,67 @@ public class ViewPagerEx extends ViewGroup{
         }
 
         if (mAdapter == null || mAdapter.getCount() == 0) {
+            // Nothing to present or scroll; nothing to touch.
+            return false;
+        }
+
+        if (mVelocityTracker == null) {
+            mVelocityTracker = VelocityTracker.obtain();
+        }
+        mVelocityTracker.addMovement(ev);
+
+        final int action = ev.getAction();
+        boolean needsInvalidate = false;
+
+        switch (action & MotionEventCompat.ACTION_MASK) {
+            case MotionEvent.ACTION_DOWN: {
+                mScroller.abortAnimation();
+                mPopulatePending = false;
+                populate();
+
+                // Remember where the motion event started
+                mLastMotionX = mInitialMotionX = ev.getX();
+                mLastMotionY = mInitialMotionY = ev.getY();
+                mActivePointerId = MotionEventCompat.getPointerId(ev, 0);
+                break;
+            }
+            case MotionEvent.ACTION_MOVE:
+                if (!mIsBeingDragged) {
+                    final int pointerIndex = MotionEventCompat.findPointerIndex(ev, mActivePointerId);
+                    final float x = MotionEventCompat.getX(ev, pointerIndex);
+                    final float xDiff = Math.abs(x - mLastMotionX);
+                    final float y = MotionEventCompat.getY(ev, pointerIndex);
+                    final float yDiff = Math.abs(y - mLastMotionY);
+                    if (DEBUG) Log.v(TAG, "Moved x to " + x + "," + y + " diff=" + xDiff + "," + yDiff);
+                    if (xDiff > mTouchSlop && xDiff > yDiff) {
+                        if (DEBUG) Log.v(TAG, "Starting drag!");
+                        mIsBeingDragged = true;
+                        requestParentDisallowInterceptTouchEvent(true);
+                        mLastMotionX = x - mInitialMotionX > 0 ? mInitialMotionX + mTouchSlop :
+                                mInitialMotionX - mTouchSlop;
+                        mLastMotionY = y;
+                        setScrollState(SCROLL_STATE_DRAGGING);
+                        setScrollingCacheEnabled(true);
+
+                        // Disallow Parent Intercept, just in case
+                        ViewParent parent = getParent();
+                        if (parent != null) {
+                            parent.requestDisallowInterceptTouchEvent(true);
+                        }
+                    }
+                }
+                // Not else! Note that mIsBeingDragged can be set above.
+                if (mIsBeingDragged) {
+                    // Scroll to follow the motion event
+                    final int activePointerIndex = MotionEventCompat.findPointerIndex(
+                            ev, mActivePointerId);
+                    final float x = MotionEventCompat.getX(ev, activePointerIndex);
+                    needsInvalidate |= performDrag(x);
+                }
+                break;
+            case MotionEvent.ACTION_UP:
+                if (mIsBeingDragged) {
+                    final VelocityTracker velocityTracker = mVelocityTracker;
+                    velocityTracker.computeCurrentVelocity(1000, mMaximumVelocity);
+                    int initialVelocity = (int) VelocityTrackerCompat.getXVelocity(
+                            velocityTracker, mActivePointerId);
