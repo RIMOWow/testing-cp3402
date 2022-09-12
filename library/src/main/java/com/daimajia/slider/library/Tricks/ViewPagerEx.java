@@ -1736,3 +1736,75 @@ public class ViewPagerEx extends ViewGroup{
 
         if (mPageTransformer != null) {
             final int scrollX = getScrollX();
+            final int childCount = getChildCount();
+            for (int i = 0; i < childCount; i++) {
+                final View child = getChildAt(i);
+                final LayoutParams lp = (LayoutParams) child.getLayoutParams();
+
+                if (lp.isDecor) continue;
+
+                final float transformPos = (float) (child.getLeft() - scrollX) / getClientWidth();
+                mPageTransformer.transformPage(child, transformPos);
+            }
+        }
+
+        mCalledSuper = true;
+    }
+
+    private void completeScroll(boolean postEvents) {
+        boolean needPopulate = mScrollState == SCROLL_STATE_SETTLING;
+        if (needPopulate) {
+            // Done with scroll, no longer want to cache view drawing.
+            setScrollingCacheEnabled(false);
+            mScroller.abortAnimation();
+            int oldX = getScrollX();
+            int oldY = getScrollY();
+            int x = mScroller.getCurrX();
+            int y = mScroller.getCurrY();
+            if (oldX != x || oldY != y) {
+                scrollTo(x, y);
+            }
+        }
+        mPopulatePending = false;
+        for (int i=0; i<mItems.size(); i++) {
+            ItemInfo ii = mItems.get(i);
+            if (ii.scrolling) {
+                needPopulate = true;
+                ii.scrolling = false;
+            }
+        }
+        if (needPopulate) {
+            if (postEvents) {
+                ViewCompat.postOnAnimation(this, mEndScrollRunnable);
+            } else {
+                mEndScrollRunnable.run();
+            }
+        }
+    }
+
+    private boolean isGutterDrag(float x, float dx) {
+        return (x < mGutterSize && dx > 0) || (x > getWidth() - mGutterSize && dx < 0);
+    }
+
+    private void enableLayers(boolean enable) {
+        final int childCount = getChildCount();
+        for (int i = 0; i < childCount; i++) {
+            final int layerType = enable ?
+                    ViewCompat.LAYER_TYPE_HARDWARE : ViewCompat.LAYER_TYPE_NONE;
+            ViewCompat.setLayerType(getChildAt(i), layerType, null);
+        }
+    }
+
+    @Override
+    public boolean onInterceptTouchEvent(MotionEvent ev) {
+        /*
+         * This method JUST determines whether we want to intercept the motion.
+         * If we return true, onMotionEvent will be called and we do the actual
+         * scrolling there.
+         */
+
+        final int action = ev.getAction() & MotionEventCompat.ACTION_MASK;
+
+        // Always take care of the touch gesture being complete.
+        if (action == MotionEvent.ACTION_CANCEL || action == MotionEvent.ACTION_UP) {
+            // Release the drag.
