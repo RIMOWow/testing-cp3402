@@ -1577,3 +1577,87 @@ public class ViewPagerEx extends ViewGroup{
                 }
             }
         }
+
+        final int childWidth = width - paddingLeft - paddingRight;
+        // Page views. Do this once we have the right padding offsets from above.
+        for (int i = 0; i < count; i++) {
+            final View child = getChildAt(i);
+            if (child.getVisibility() != GONE) {
+                final LayoutParams lp = (LayoutParams) child.getLayoutParams();
+                ItemInfo ii;
+                if (!lp.isDecor && (ii = infoForChild(child)) != null) {
+                    int loff = (int) (childWidth * ii.offset);
+                    int childLeft = paddingLeft + loff;
+                    int childTop = paddingTop;
+                    if (lp.needsMeasure) {
+                        // This was added during layout and needs measurement.
+                        // Do it now that we know what we're working with.
+                        lp.needsMeasure = false;
+                        final int widthSpec = MeasureSpec.makeMeasureSpec(
+                                (int) (childWidth * lp.widthFactor),
+                                MeasureSpec.EXACTLY);
+                        final int heightSpec = MeasureSpec.makeMeasureSpec(
+                                (int) (height - paddingTop - paddingBottom),
+                                MeasureSpec.EXACTLY);
+                        child.measure(widthSpec, heightSpec);
+                    }
+                    if (DEBUG) Log.v(TAG, "Positioning #" + i + " " + child + " f=" + ii.object
+                            + ":" + childLeft + "," + childTop + " " + child.getMeasuredWidth()
+                            + "x" + child.getMeasuredHeight());
+                    child.layout(childLeft, childTop,
+                            childLeft + child.getMeasuredWidth(),
+                            childTop + child.getMeasuredHeight());
+                }
+            }
+        }
+        mTopPageBounds = paddingTop;
+        mBottomPageBounds = height - paddingBottom;
+        mDecorChildCount = decorCount;
+
+        if (mFirstLayout) {
+            scrollToItem(mCurItem, false, 0, false);
+        }
+        mFirstLayout = false;
+    }
+
+    @Override
+    public void computeScroll() {
+        if (!mScroller.isFinished() && mScroller.computeScrollOffset()) {
+            int oldX = getScrollX();
+            int oldY = getScrollY();
+            int x = mScroller.getCurrX();
+            int y = mScroller.getCurrY();
+
+            if (oldX != x || oldY != y) {
+                scrollTo(x, y);
+                if (!pageScrolled(x)) {
+                    mScroller.abortAnimation();
+                    scrollTo(0, y);
+                }
+            }
+
+            // Keep on drawing until the animation has finished.
+            ViewCompat.postInvalidateOnAnimation(this);
+            return;
+        }
+
+        // Done with scroll, clean up state.
+        completeScroll(true);
+    }
+
+    private boolean pageScrolled(int xpos) {
+        if (mItems.size() == 0) {
+            mCalledSuper = false;
+            onPageScrolled(0, 0, 0);
+            if (!mCalledSuper) {
+                throw new IllegalStateException(
+                        "onPageScrolled did not call superclass implementation");
+            }
+            return false;
+        }
+        final ItemInfo ii = infoForCurrentScrollPosition();
+        final int width = getClientWidth();
+        final int widthWithMargin = width + mPageMargin;
+        final float marginOffset = (float) mPageMargin / width;
+        final int currentPage = ii.position;
+        final float pageOffset = (((float) xpos / width) - ii.offset) /
