@@ -1888,3 +1888,70 @@ public class ViewPagerEx extends ViewGroup{
                         ViewCompat.postInvalidateOnAnimation(this);
                     }
                 }
+                break;
+            }
+
+            case MotionEvent.ACTION_DOWN: {
+                /*
+                 * Remember location of down touch.
+                 * ACTION_DOWN always refers to pointer index 0.
+                 */
+                mLastMotionX = mInitialMotionX = ev.getX();
+                mLastMotionY = mInitialMotionY = ev.getY();
+                mActivePointerId = MotionEventCompat.getPointerId(ev, 0);
+                mIsUnableToDrag = false;
+
+                mScroller.computeScrollOffset();
+                if (mScrollState == SCROLL_STATE_SETTLING &&
+                        Math.abs(mScroller.getFinalX() - mScroller.getCurrX()) > mCloseEnough) {
+                    // Let the user 'catch' the pager as it animates.
+                    mScroller.abortAnimation();
+                    mPopulatePending = false;
+                    populate();
+                    mIsBeingDragged = true;
+                    requestParentDisallowInterceptTouchEvent(true);
+                    setScrollState(SCROLL_STATE_DRAGGING);
+                } else {
+                    completeScroll(false);
+                    mIsBeingDragged = false;
+                }
+
+                if (DEBUG) Log.v(TAG, "Down at " + mLastMotionX + "," + mLastMotionY
+                        + " mIsBeingDragged=" + mIsBeingDragged
+                        + "mIsUnableToDrag=" + mIsUnableToDrag);
+                break;
+            }
+
+            case MotionEventCompat.ACTION_POINTER_UP:
+                onSecondaryPointerUp(ev);
+                break;
+        }
+
+        if (mVelocityTracker == null) {
+            mVelocityTracker = VelocityTracker.obtain();
+        }
+        mVelocityTracker.addMovement(ev);
+
+        /*
+         * The only time we want to intercept motion events is if we are in the
+         * drag mode.
+         */
+        return mIsBeingDragged;
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent ev) {
+        if (mFakeDragging) {
+            // A fake drag is in progress already, ignore this real one
+            // but still eat the touch events.
+            // (It is likely that the user is multi-touching the screen.)
+            return true;
+        }
+
+        if (ev.getAction() == MotionEvent.ACTION_DOWN && ev.getEdgeFlags() != 0) {
+            // Don't handle edge touches immediately -- they may actually belong to one of our
+            // descendants.
+            return false;
+        }
+
+        if (mAdapter == null || mAdapter.getCount() == 0) {
