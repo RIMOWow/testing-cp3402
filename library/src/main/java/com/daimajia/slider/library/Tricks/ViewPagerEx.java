@@ -2089,3 +2089,78 @@ public class ViewPagerEx extends ViewGroup{
 
         final ItemInfo firstItem = mItems.get(0);
         final ItemInfo lastItem = mItems.get(mItems.size() - 1);
+        if (firstItem.position != 0) {
+            leftAbsolute = false;
+            leftBound = firstItem.offset * width;
+        }
+        if (lastItem.position != mAdapter.getCount() - 1) {
+            rightAbsolute = false;
+            rightBound = lastItem.offset * width;
+        }
+
+        if (scrollX < leftBound) {
+            if (leftAbsolute) {
+                float over = leftBound - scrollX;
+                needsInvalidate = mLeftEdge.onPull(Math.abs(over) / width);
+            }
+            scrollX = leftBound;
+        } else if (scrollX > rightBound) {
+            if (rightAbsolute) {
+                float over = scrollX - rightBound;
+                needsInvalidate = mRightEdge.onPull(Math.abs(over) / width);
+            }
+            scrollX = rightBound;
+        }
+        // Don't lose the rounded component
+        mLastMotionX += scrollX - (int) scrollX;
+        scrollTo((int) scrollX, getScrollY());
+        pageScrolled((int) scrollX);
+
+        return needsInvalidate;
+    }
+
+    /**
+     * @return Info about the page at the current scroll position.
+     *         This can be synthetic for a missing middle page; the 'object' field can be null.
+     */
+    private ItemInfo infoForCurrentScrollPosition() {
+        final int width = getClientWidth();
+        final float scrollOffset = width > 0 ? (float) getScrollX() / width : 0;
+        final float marginOffset = width > 0 ? (float) mPageMargin / width : 0;
+        int lastPos = -1;
+        float lastOffset = 0.f;
+        float lastWidth = 0.f;
+        boolean first = true;
+
+        ItemInfo lastItem = null;
+        for (int i = 0; i < mItems.size(); i++) {
+            ItemInfo ii = mItems.get(i);
+            float offset;
+            if (!first && ii.position != lastPos + 1) {
+                // Create a synthetic item for a missing page.
+                ii = mTempItem;
+                ii.offset = lastOffset + lastWidth + marginOffset;
+                ii.position = lastPos + 1;
+                ii.widthFactor = mAdapter.getPageWidth(ii.position);
+                i--;
+            }
+            offset = ii.offset;
+
+            final float leftBound = offset;
+            final float rightBound = offset + ii.widthFactor + marginOffset;
+            if (first || scrollOffset >= leftBound) {
+                if (scrollOffset < rightBound || i == mItems.size() - 1) {
+                    return ii;
+                }
+            } else {
+                return lastItem;
+            }
+            first = false;
+            lastPos = ii.position;
+            lastOffset = offset;
+            lastWidth = ii.widthFactor;
+            lastItem = ii;
+        }
+
+        return lastItem;
+    }
