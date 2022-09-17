@@ -2247,3 +2247,93 @@ public class ViewPagerEx extends ViewGroup{
                 while (pos > ii.position && itemIndex < itemCount) {
                     ii = mItems.get(++itemIndex);
                 }
+
+                float drawAt;
+                if (pos == ii.position) {
+                    drawAt = (ii.offset + ii.widthFactor) * width;
+                    offset = ii.offset + ii.widthFactor + marginOffset;
+                } else {
+                    float widthFactor = mAdapter.getPageWidth(pos);
+                    drawAt = (offset + widthFactor) * width;
+                    offset += widthFactor + marginOffset;
+                }
+
+                if (drawAt + mPageMargin > scrollX) {
+                    mMarginDrawable.setBounds((int) drawAt, mTopPageBounds,
+                            (int) (drawAt + mPageMargin + 0.5f), mBottomPageBounds);
+                    mMarginDrawable.draw(canvas);
+                }
+
+                if (drawAt > scrollX + width) {
+                    break; // No more visible, no sense in continuing
+                }
+            }
+        }
+    }
+
+    /**
+     * Start a fake drag of the pager.
+     *
+     * <p>A fake drag can be useful if you want to synchronize the motion of the ViewPager
+     * with the touch scrolling of another view, while still letting the ViewPager
+     * control the snapping motion and fling behavior. (e.g. parallax-scrolling tabs.)
+     * Call {@link #fakeDragBy(float)} to simulate the actual drag motion. Call
+     * {@link #endFakeDrag()} to complete the fake drag and fling as necessary.
+     *
+     * <p>During a fake drag the ViewPager will ignore all touch events. If a real drag
+     * is already in progress, this method will return false.
+     *
+     * @return true if the fake drag began successfully, false if it could not be started.
+     *
+     * @see #fakeDragBy(float)
+     * @see #endFakeDrag()
+     */
+    public boolean beginFakeDrag() {
+        if (mIsBeingDragged) {
+            return false;
+        }
+        mFakeDragging = true;
+        setScrollState(SCROLL_STATE_DRAGGING);
+        mInitialMotionX = mLastMotionX = 0;
+        if (mVelocityTracker == null) {
+            mVelocityTracker = VelocityTracker.obtain();
+        } else {
+            mVelocityTracker.clear();
+        }
+        final long time = SystemClock.uptimeMillis();
+        final MotionEvent ev = MotionEvent.obtain(time, time, MotionEvent.ACTION_DOWN, 0, 0, 0);
+        mVelocityTracker.addMovement(ev);
+        ev.recycle();
+        mFakeDragBeginTime = time;
+        return true;
+    }
+
+    /**
+     * End a fake drag of the pager.
+     *
+     * @see #beginFakeDrag()
+     * @see #fakeDragBy(float)
+     */
+    public void endFakeDrag() {
+        if (!mFakeDragging) {
+            throw new IllegalStateException("No fake drag in progress. Call beginFakeDrag first.");
+        }
+
+        final VelocityTracker velocityTracker = mVelocityTracker;
+        velocityTracker.computeCurrentVelocity(1000, mMaximumVelocity);
+        int initialVelocity = (int) VelocityTrackerCompat.getXVelocity(
+                velocityTracker, mActivePointerId);
+        mPopulatePending = true;
+        final int width = getClientWidth();
+        final int scrollX = getScrollX();
+        final ItemInfo ii = infoForCurrentScrollPosition();
+        final int currentPage = ii.position;
+        final float pageOffset = (((float) scrollX / width) - ii.offset) / ii.widthFactor;
+        final int totalDelta = (int) (mLastMotionX - mInitialMotionX);
+        int nextPage = determineTargetPage(currentPage, pageOffset, initialVelocity,
+                totalDelta);
+        setCurrentItemInternal(nextPage, true, true, initialVelocity);
+        endDrag();
+
+        mFakeDragging = false;
+    }
