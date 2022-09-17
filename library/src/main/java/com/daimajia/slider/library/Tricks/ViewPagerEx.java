@@ -2164,3 +2164,86 @@ public class ViewPagerEx extends ViewGroup{
 
         return lastItem;
     }
+
+    private int determineTargetPage(int currentPage, float pageOffset, int velocity, int deltaX) {
+        int targetPage;
+        if (Math.abs(deltaX) > mFlingDistance && Math.abs(velocity) > mMinimumVelocity) {
+            targetPage = velocity > 0 ? currentPage : currentPage + 1;
+        } else {
+            final float truncator = currentPage >= mCurItem ? 0.4f : 0.6f;
+            targetPage = (int) (currentPage + pageOffset + truncator);
+        }
+
+        if (mItems.size() > 0) {
+            final ItemInfo firstItem = mItems.get(0);
+            final ItemInfo lastItem = mItems.get(mItems.size() - 1);
+
+            // Only let the user target pages we have items for
+            targetPage = Math.max(firstItem.position, Math.min(targetPage, lastItem.position));
+        }
+
+        return targetPage;
+    }
+
+    @Override
+    public void draw(Canvas canvas) {
+        super.draw(canvas);
+        boolean needsInvalidate = false;
+
+        final int overScrollMode = ViewCompat.getOverScrollMode(this);
+        if (overScrollMode == ViewCompat.OVER_SCROLL_ALWAYS ||
+                (overScrollMode == ViewCompat.OVER_SCROLL_IF_CONTENT_SCROLLS &&
+                        mAdapter != null && mAdapter.getCount() > 1)) {
+            if (!mLeftEdge.isFinished()) {
+                final int restoreCount = canvas.save();
+                final int height = getHeight() - getPaddingTop() - getPaddingBottom();
+                final int width = getWidth();
+
+                canvas.rotate(270);
+                canvas.translate(-height + getPaddingTop(), mFirstOffset * width);
+                mLeftEdge.setSize(height, width);
+                needsInvalidate |= mLeftEdge.draw(canvas);
+                canvas.restoreToCount(restoreCount);
+            }
+            if (!mRightEdge.isFinished()) {
+                final int restoreCount = canvas.save();
+                final int width = getWidth();
+                final int height = getHeight() - getPaddingTop() - getPaddingBottom();
+
+                canvas.rotate(90);
+                canvas.translate(-getPaddingTop(), -(mLastOffset + 1) * width);
+                mRightEdge.setSize(height, width);
+                needsInvalidate |= mRightEdge.draw(canvas);
+                canvas.restoreToCount(restoreCount);
+            }
+        } else {
+            mLeftEdge.finish();
+            mRightEdge.finish();
+        }
+
+        if (needsInvalidate) {
+            // Keep animating
+            ViewCompat.postInvalidateOnAnimation(this);
+        }
+    }
+
+    @Override
+    protected void onDraw(Canvas canvas) {
+        super.onDraw(canvas);
+
+        // Draw the margin drawable between pages if needed.
+        if (mPageMargin > 0 && mMarginDrawable != null && mItems.size() > 0 && mAdapter != null) {
+            final int scrollX = getScrollX();
+            final int width = getWidth();
+
+            final float marginOffset = (float) mPageMargin / width;
+            int itemIndex = 0;
+            ItemInfo ii = mItems.get(0);
+            float offset = ii.offset;
+            final int itemCount = mItems.size();
+            final int firstPos = ii.position;
+            final int lastPos = mItems.get(itemCount - 1).position;
+            for (int pos = firstPos; pos < lastPos; pos++) {
+                while (pos > ii.position && itemIndex < itemCount) {
+                    ii = mItems.get(++itemIndex);
+                }
