@@ -2470,3 +2470,78 @@ public class ViewPagerEx extends ViewGroup{
         if (v instanceof ViewGroup) {
             final ViewGroup group = (ViewGroup) v;
             final int scrollX = v.getScrollX();
+            final int scrollY = v.getScrollY();
+            final int count = group.getChildCount();
+            // Count backwards - let topmost views consume scroll distance first.
+            for (int i = count - 1; i >= 0; i--) {
+                // TODO: Add versioned support here for transformed views.
+                // This will not work for transformed views in Honeycomb+
+                final View child = group.getChildAt(i);
+                if (x + scrollX >= child.getLeft() && x + scrollX < child.getRight() &&
+                        y + scrollY >= child.getTop() && y + scrollY < child.getBottom() &&
+                        canScroll(child, true, dx, x + scrollX - child.getLeft(),
+                                y + scrollY - child.getTop())) {
+                    return true;
+                }
+            }
+        }
+
+        return checkV && ViewCompat.canScrollHorizontally(v, -dx);
+    }
+
+    @Override
+    public boolean dispatchKeyEvent(KeyEvent event) {
+        // Let the focused view and/or our descendants get the key first
+        return super.dispatchKeyEvent(event) || executeKeyEvent(event);
+    }
+
+    /**
+     * You can call this function yourself to have the scroll view perform
+     * scrolling from a key event, just as if the event had been dispatched to
+     * it by the view hierarchy.
+     *
+     * @param event The key event to execute.
+     * @return Return true if the event was handled, else false.
+     */
+    public boolean executeKeyEvent(KeyEvent event) {
+        boolean handled = false;
+        if (event.getAction() == KeyEvent.ACTION_DOWN) {
+            switch (event.getKeyCode()) {
+                case KeyEvent.KEYCODE_DPAD_LEFT:
+                    handled = arrowScroll(FOCUS_LEFT);
+                    break;
+                case KeyEvent.KEYCODE_DPAD_RIGHT:
+                    handled = arrowScroll(FOCUS_RIGHT);
+                    break;
+                case KeyEvent.KEYCODE_TAB:
+                    if (Build.VERSION.SDK_INT >= 11) {
+                        // The focus finder had a bug handling FOCUS_FORWARD and FOCUS_BACKWARD
+                        // before Android 3.0. Ignore the tab key on those devices.
+                        if (KeyEventCompat.hasNoModifiers(event)) {
+                            handled = arrowScroll(FOCUS_FORWARD);
+                        } else if (KeyEventCompat.hasModifiers(event, KeyEvent.META_SHIFT_ON)) {
+                            handled = arrowScroll(FOCUS_BACKWARD);
+                        }
+                    }
+                    break;
+            }
+        }
+        return handled;
+    }
+
+    public boolean arrowScroll(int direction) {
+        View currentFocused = findFocus();
+        if (currentFocused == this) {
+            currentFocused = null;
+        } else if (currentFocused != null) {
+            boolean isChild = false;
+            for (ViewParent parent = currentFocused.getParent(); parent instanceof ViewGroup;
+                 parent = parent.getParent()) {
+                if (parent == this) {
+                    isChild = true;
+                    break;
+                }
+            }
+            if (!isChild) {
+                // This would cause the focus search down below to fail in fun ways.
+                final StringBuilder sb = new StringBuilder();
