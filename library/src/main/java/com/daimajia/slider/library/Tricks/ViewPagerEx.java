@@ -2402,3 +2402,71 @@ public class ViewPagerEx extends ViewGroup{
     private void onSecondaryPointerUp(MotionEvent ev) {
         final int pointerIndex = MotionEventCompat.getActionIndex(ev);
         final int pointerId = MotionEventCompat.getPointerId(ev, pointerIndex);
+        if (pointerId == mActivePointerId) {
+            // This was our active pointer going up. Choose a new
+            // active pointer and adjust accordingly.
+            final int newPointerIndex = pointerIndex == 0 ? 1 : 0;
+            mLastMotionX = MotionEventCompat.getX(ev, newPointerIndex);
+            mActivePointerId = MotionEventCompat.getPointerId(ev, newPointerIndex);
+            if (mVelocityTracker != null) {
+                mVelocityTracker.clear();
+            }
+        }
+    }
+
+    private void endDrag() {
+        mIsBeingDragged = false;
+        mIsUnableToDrag = false;
+
+        if (mVelocityTracker != null) {
+            mVelocityTracker.recycle();
+            mVelocityTracker = null;
+        }
+    }
+
+    private void setScrollingCacheEnabled(boolean enabled) {
+        if (mScrollingCacheEnabled != enabled) {
+            mScrollingCacheEnabled = enabled;
+            if (USE_CACHE) {
+                final int size = getChildCount();
+                for (int i = 0; i < size; ++i) {
+                    final View child = getChildAt(i);
+                    if (child.getVisibility() != GONE) {
+                        child.setDrawingCacheEnabled(enabled);
+                    }
+                }
+            }
+        }
+    }
+
+    public boolean canScrollHorizontally(int direction) {
+        if (mAdapter == null) {
+            return false;
+        }
+
+        final int width = getClientWidth();
+        final int scrollX = getScrollX();
+        if (direction < 0) {
+            return (scrollX > (int) (width * mFirstOffset));
+        } else if (direction > 0) {
+            return (scrollX < (int) (width * mLastOffset));
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * Tests scrollability within child views of v given a delta of dx.
+     *
+     * @param v View to test for horizontal scrollability
+     * @param checkV Whether the view v passed should itself be checked for scrollability (true),
+     *               or just its children (false).
+     * @param dx Delta scrolled in pixels
+     * @param x X coordinate of the active touch point
+     * @param y Y coordinate of the active touch point
+     * @return true if child views of v can be scrolled by delta of dx.
+     */
+    protected boolean canScroll(View v, boolean checkV, int dx, int x, int y) {
+        if (v instanceof ViewGroup) {
+            final ViewGroup group = (ViewGroup) v;
+            final int scrollX = v.getScrollX();
