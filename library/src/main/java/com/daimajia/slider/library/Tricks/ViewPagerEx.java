@@ -2888,3 +2888,22 @@ public class ViewPagerEx extends ViewGroup{
 
         public LayoutParams(Context context, AttributeSet attrs) {
             super(context, attrs);
+
+            final TypedArray a = context.obtainStyledAttributes(attrs, LAYOUT_ATTRS);
+            gravity = a.getInteger(0, Gravity.TOP);
+            a.recycle();
+        }
+    }
+
+    static class ViewPositionComparator implements Comparator<View> {
+        @Override
+        public int compare(View lhs, View rhs) {
+            final LayoutParams llp = (LayoutParams) lhs.getLayoutParams();
+            final LayoutParams rlp = (LayoutParams) rhs.getLayoutParams();
+            if (llp.isDecor != rlp.isDecor) {
+                return llp.isDecor ? 1 : -1;
+            }
+            return llp.position - rlp.position;
+        }
+    }
+}
