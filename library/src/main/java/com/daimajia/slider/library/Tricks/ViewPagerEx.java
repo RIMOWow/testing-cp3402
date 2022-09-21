@@ -2824,3 +2824,67 @@ public class ViewPagerEx extends ViewGroup{
                     }
                 } return false;
             }
+            return false;
+        }
+
+        private boolean canScroll() {
+            return (mAdapter != null) && (mAdapter.getCount() > 1);
+        }
+    }
+
+    private class PagerObserver extends DataSetObserver {
+        @Override
+        public void onChanged() {
+            dataSetChanged();
+        }
+        @Override
+        public void onInvalidated() {
+            dataSetChanged();
+        }
+    }
+
+    /**
+     * Layout parameters that should be supplied for views added to a
+     * ViewPager.
+     */
+    public static class LayoutParams extends ViewGroup.LayoutParams {
+        /**
+         * true if this view is a decoration on the pager itself and not
+         * a view supplied by the adapter.
+         */
+        public boolean isDecor;
+
+        /**
+         * Gravity setting for use on decor views only:
+         * Where to position the view page within the overall ViewPager
+         * container; constants are defined in {@link android.view.Gravity}.
+         */
+        public int gravity;
+
+        /**
+         * Width as a 0-1 multiplier of the measured pager width
+         */
+        float widthFactor = 0.f;
+
+        /**
+         * true if this view was added during layout and needs to be measured
+         * before being positioned.
+         */
+        boolean needsMeasure;
+
+        /**
+         * Adapter position this view is for if !isDecor
+         */
+        int position;
+
+        /**
+         * Current child index within the ViewPager that this view occupies
+         */
+        int childIndex;
+
+        public LayoutParams() {
+            super(FILL_PARENT, FILL_PARENT);
+        }
+
+        public LayoutParams(Context context, AttributeSet attrs) {
+            super(context, attrs);
