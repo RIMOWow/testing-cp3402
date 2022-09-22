@@ -4,4 +4,5 @@
     android:orientation="horizontal" android:layout_width="wrap_content"
     android:id="@+id/daimajia_indicator_wrapper"
     android:layout_gravity="center"
-    android:layout_hei
+    android:layout_height="wrap_content">
+</LinearLayout>
