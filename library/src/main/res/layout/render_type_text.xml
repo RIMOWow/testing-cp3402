@@ -9,4 +9,6 @@
     <ProgressBar
         android:id="@+id/loading_bar"
         android:layout_centerInParent="true"
-        android:layout_width="w
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <LinearLayout
