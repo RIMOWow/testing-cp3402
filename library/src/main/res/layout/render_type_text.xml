@@ -13,4 +13,6 @@
         android:layout_height="wrap_content" />
     <LinearLayout
         android:id="@+id/description_layout"
-        android:layout_alignParentBotto
+        android:layout_alignParentBottom="true"
+        android:minHeight="30dp"
+        android:b
