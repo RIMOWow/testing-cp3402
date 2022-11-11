@@ -57,3 +57,30 @@
 
         <attr name="selected_width" format="dimension"/>
         <attr name="selected_height" format="dimension"/>
+
+        <attr name="unselected_width" format="dimension"/>
+        <attr name="unselected_height" format="dimension"/>
+
+        <attr name="padding_left" format="dimension"/>
+        <attr name="padding_right" format="dimension"/>
+        <attr name="padding_top" format="dimension"/>
+        <attr name="padding_bottom" format="dimension"/>
+
+        <attr name="selected_padding_left" format="dimension"/>
+        <attr name="selected_padding_right" format="dimension"/>
+        <attr name="selected_padding_top" format="dimension"/>
+        <attr name="selected_padding_bottom" format="dimension"/>
+
+        <attr name="unselected_padding_left" format="dimension"/>
+        <attr name="unselected_padding_right" format="dimension"/>
+        <attr name="unselected_padding_top" format="dimension"/>
+        <attr name="unselected_padding_bottom" format="dimension"/>
+
+
+    </declare-styleable>
+
+    <declare-styleable name="Themes">
+        <attr name="SliderStyle" format="reference"/>
+        <attr name="PagerIndicatorStyle" format="reference"/>
+    </declare-styleable>
+</resources>
