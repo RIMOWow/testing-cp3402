@@ -9,4 +9,5 @@
         <item name="android:paddingRight">2dp</item>
         <item name="shape">oval</item>
         <item name="padding_left">3dp</item>
-        <item name="p
+        <item name="padding_right">3dp</item>
+        <item name="padding_top">4dp</ite
