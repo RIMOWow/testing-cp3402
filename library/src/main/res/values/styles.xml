@@ -19,4 +19,6 @@
         <item name="selected_height">6dp</item>
         <item name="unselected_width">6dp</item>
         <item name="unselected_height">6dp</item>
-    <
+    </style>
+
+    <style name="AndroidImageSlider_Attractive_Rect_Blue">
