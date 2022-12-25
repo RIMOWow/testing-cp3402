@@ -14,4 +14,6 @@
         <item name="padding_bottom">4dp</item>
 
         <item name="selected_color">#f60</item>
-        <item name="unselected_col
+        <item name="unselected_color">#ffffff</item>
+        <item name="selected_width">6dp</item>
+   
