@@ -24,4 +24,5 @@
     <style name="AndroidImageSlider_Attractive_Rect_Blue">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="a
+        <item name="android:gravity">center</item>
+        <item name="android:paddingLeft">2
