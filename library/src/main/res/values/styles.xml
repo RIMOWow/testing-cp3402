@@ -29,4 +29,5 @@
         <item name="android:paddingRight">2dp</item>
         <item name="shape">rect</item>
         <item name="padding_left">3dp</item>
-       
+        <item name="padding_right">3dp</item>
+        <item name="padding_top">4dp</
