@@ -35,4 +35,5 @@
 
         <item name="selected_color">#30CCE5</item>
         <item name="unselected_color">#333333</item>
-        <item
+        <item name="selected_width">13dp</item>
+        <item name="selected_height
