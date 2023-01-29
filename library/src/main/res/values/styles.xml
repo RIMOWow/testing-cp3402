@@ -38,4 +38,7 @@
         <item name="selected_width">13dp</item>
         <item name="selected_height">4dp</item>
         <item name="unselected_width">13dp</item>
-        <item nam
+        <item name="unselected_height">4dp</item>
+    </style>
+
+    <style name="AndroidImageSli
