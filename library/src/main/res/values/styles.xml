@@ -44,4 +44,6 @@
     <style name="AndroidImageSlider_Magnifier_Oval_Black">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="a
+        <item name="android:gravity">center</item>
+        <item name="android:paddingLeft">2dp</item>
+   
