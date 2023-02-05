@@ -41,4 +41,5 @@
         <item name="unselected_height">4dp</item>
     </style>
 
-    <style name="AndroidImageSli
+    <style name="AndroidImageSlider_Magnifier_Oval_Black">
+        <item name="android:layout_width">wrap_content<
