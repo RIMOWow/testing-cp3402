@@ -50,4 +50,7 @@
         <item name="shape">oval</item>
         <item name="padding_left">3dp</item>
         <item name="padding_right">3dp</item>
-        <item name="padding_top">4d
+        <item name="padding_top">4dp</item>
+        <item name="padding_bottom">4dp</item>
+
+        <item name="s
