@@ -54,4 +54,5 @@
         <item name="padding_bottom">4dp</item>
 
         <item name="selected_color">#333333</item>
-        <item name="unselected_color">#
+        <item name="unselected_color">#33000000</item>
+        <item name="selected_width">8dp</it
